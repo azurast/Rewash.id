@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <ion-content color="Poppins">
-  <ion-slides pager="true">
-    <ion-slide >
-      <ion-list style="height: 100%; position: center; width: 100%; padding-top: 50%" class="awal">
-        <ion-grid>
-          <ion-row>
-            <ion-col size="8" size-md="8" offset="2">
-              <ion-img src="/assets/icon/REWASH_1.png"></ion-img>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-list>
-    </ion-slide>
 
+  <div *ngIf="showSplash" class="awal" style="height: 100%; position: center; width: 100%; padding-top: 50%" >
+    <ion-grid>
+      <ion-row class="splash">
+        <ion-col size="8" size-md="8" offset="2">
+          <ion-img src="/assets/icon/REWASH_1.png"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-slides pager="true">
     <ion-slide >
       <ion-list class="cont">
         <ion-grid>
