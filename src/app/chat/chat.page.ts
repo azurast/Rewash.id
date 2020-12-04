@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, AfterViewChecked, QueryList, ViewChildren} from '@angular/core';
 import {Chat} from '../services/chat/chat.model';
 import {ActivatedRoute} from '@angular/router';
 import {AngularFireDatabase} from '@angular/fire/database';
@@ -9,7 +9,9 @@ import {AngularFireAuth} from '@angular/fire/auth';
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
-export class ChatPage implements OnInit {
+export class ChatPage implements OnInit, AfterViewChecked {
+  @ViewChild('scrollChat') private myScrollContainer: ElementRef;
+  @ViewChildren('chatContainer') chatContainers: QueryList<ElementRef>;
   outletName: string;
   loadedChat: Chat[] = [];
   uid: string;
@@ -31,25 +33,37 @@ export class ChatPage implements OnInit {
 
       this.orderId = paramMap.get('idOrder');
 
-      this.db.object('/chat/' + this.orderId).valueChanges().subscribe(data => {
-        // @ts-ignore
+      this.db.object('/chat/' + this.orderId).valueChanges().subscribe((data: any) => {
         this.uid = data.user;
-        // @ts-ignore
         this.outletName = data.outlet_name;
-        // @ts-ignore
         Object.keys(data.chat).forEach(chatKey => {
-          // @ts-ignore
           this.loadedChat.push({
-            // @ts-ignore
             message: data.chat[chatKey].message,
-            // @ts-ignore
             time: data.chat[chatKey].time,
-            // @ts-ignore
             sender: data.chat[chatKey].sender
           });
         });
       });
     });
+    this.scrollToBottom();
+    // this.chatContainers.changes.subscribe((list: QueryList<ElementRef>) => {
+    //   this.scrollToBottom();
+    // })
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+    this.chatContainers.changes.subscribe((list: QueryList<ElementRef>) => {
+      this.scrollToBottom();
+    })
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   handleSendMessage() {
@@ -60,6 +74,7 @@ export class ChatPage implements OnInit {
         message: this.message
       });
       this.message = '';
+      this.loadedChat = [];
     }
   }
 

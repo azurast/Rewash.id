@@ -57,18 +57,15 @@
 
             <!-- With Content Card -->
             <ion-card *ngFor="let order of ongoingOrders">
-                <ion-card-header>
-                    <ion-card-subtitle>{{order.outlet_name}}</ion-card-subtitle>
+                <ion-card-header (click)="goToOrderDetail(order)">
+                    <ion-card-subtitle>{{order.DETAIL.SHIPPING.DESTINATION}}</ion-card-subtitle>
+                    <ion-card-subtitle>{{"Estimated Delivery: " + toDate(order.DETAIL.SHIPPING.DELIVERYTD)}}</ion-card-subtitle>
                 </ion-card-header>
-
-                <ion-card-content>
-                    Stepper
-                </ion-card-content>
                 <ion-grid class="ion-order-card">
                     <ion-row>
                         <ion-col size="9" class="ion-order-card-status">
-                            <ion-text>
-                                <h6>{{order.order_status}}</h6>
+                            <ion-text *ngFor="let status of order.DETAIL.PROGRESS, let i = index">
+                                <label *ngIf="status.STATUS !== true && order.DETAIL.PROGRESS[i-1].STATUS === true">{{order.DETAIL.PROGRESS[i].NAME}}</label>
                             </ion-text>
                         </ion-col>
                         <ion-col size="3" class="ion-order-card-chat" [routerLink]="['/chat/', order.id]">

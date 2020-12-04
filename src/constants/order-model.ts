@@ -1,6 +1,8 @@
 import {Item} from './item-model';
 
 export class OrderDetail {
+    id: string;
+    finished: boolean;
     SPECIAL: Array<Item>;
     NORMAL: Array<Item>;
     OTHERS: Array<Item>;
