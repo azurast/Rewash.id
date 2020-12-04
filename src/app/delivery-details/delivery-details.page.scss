@@ -1,0 +1,9 @@
+.image-container {
+  height: 150px;
+  display: flex;
+  margin-top: auto;
+  .ion-img {
+    height: 100%;
+    padding-top: 10%;
+  }
+}

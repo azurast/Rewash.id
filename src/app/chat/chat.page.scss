@@ -1,0 +1,58 @@
+.outlet-name {
+  color: #FFFFFF;
+}
+
+.chat-container {
+padding-bottom: 25%;
+}
+
+.chat-box {
+  border-radius: 8px;
+  margin: 10px;
+  color: #000000;
+  padding: 10px 15px;
+  font-size: 15px;
+}
+
+.chat-user {
+  background-color: #B4F6F9;
+  align-self: end;
+}
+
+.chat-outlet {
+  align-self: start;
+  background-color: #F4F5F8;
+}
+
+.chat-time {
+  font-size: 10px;
+  color: #7d7d7d;
+}
+
+.text-area-container {
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  resize: none;
+  width: 100%;
+}
+
+.text-area-chat {
+  margin: 10px auto;
+  position: center;
+  background-color: #F4F5F8;
+  border-radius: 8px;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+}
+
+.text-area-edit {
+  width: 70%
+}
+
+.button-send {
+  color: #B4F6F9;
+  float: right;
+  margin: 10px;
+}

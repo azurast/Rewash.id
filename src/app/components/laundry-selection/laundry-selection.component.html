@@ -1,0 +1,31 @@
+<ion-grid>
+  <!--Laundry Smell-->
+  <form [formGroup]="laundryDetailsForm" (ngSubmit)="updateLaundryDetails(laundryDetailsForm.value)">
+    <ion-text>
+      <h5 class="text-sub-heading">Choose Scent</h5>
+    </ion-text>
+    <ion-radio-group formControlName="scent">
+      <ion-list *ngFor="let scent of AllScents" lines="full" class="ion-no-padding">
+        <ion-item>
+          <ion-label>
+            {{scent.NAME}}
+          </ion-label>
+          <ion-radio value="{{scent.NAME}}"></ion-radio>
+        </ion-item>
+      </ion-list>
+    </ion-radio-group>
+    <ion-item>
+      <ion-label style="color: #9995cf; font-weight: bold">Request Bag on Pickup</ion-label>
+      <ion-checkbox slot="end" value="Bag" color="tertiary" formControlName="bag"></ion-checkbox>
+    </ion-item>
+    <ion-text>
+      <h5 class="text-sub-heading">Additional Notes</h5>
+    </ion-text>
+    <ion-item>
+      <ion-textarea placeholder="Anything else we should know?" formControlName="notes"></ion-textarea>
+    </ion-item>
+    <ion-button expand="full" color="danger" type="submit">
+      NEXT (TEST SERVICE)
+    </ion-button>
+  </form>
+</ion-grid>

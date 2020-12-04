@@ -1,0 +1,33 @@
+.input-qty {
+    width: auto;
+    margin-left: 20px;
+    align-items: center;
+  
+    .remove-icon {
+      color: var(--ion-color-danger);
+      width: 24px;
+      height: 24px;
+    }
+  
+    .add-icon {
+      color: var(--ion-color-success);
+      width: 24px;
+      height: 24px;
+    }
+  
+    .item-qty {
+      padding: 0 10px;
+      align-items: center;
+    }
+  }
+  
+.ion-button {
+  --background: #ffffff;
+}
+
+.text-sub-heading {
+  color: var(--ion-color-primary-shade);
+  font-weight: bold;
+  margin: 10px 15px;
+}
+

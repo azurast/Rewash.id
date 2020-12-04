@@ -1,0 +1,24 @@
+<ion-grid>
+  <ion-row>
+    <ion-card>
+      <ion-list *ngFor="let item of items">
+
+        <ion-col>
+          <ion-item>
+            <ion-label>{{item.NAME}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label>{{item.PRICE | currency:curencyCode:"IDR":display:"symbol": digitsinfo:"3.0": locale:"id"}}</ion-label>
+          </ion-item>
+        </ion-col>
+
+      </ion-list>
+
+      <ion-button (click)="button()">
+      </ion-button>
+
+    </ion-card>
+  </ion-row>
+</ion-grid>

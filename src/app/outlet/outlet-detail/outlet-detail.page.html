@@ -1,0 +1,59 @@
+<ion-header>
+
+    <ion-grid class="laundry-image">
+        <ion-toolbar class="bck">
+            <ion-buttons slot="start">
+                    <ion-back-button class="button-back"
+                                     defaultHref="/outlet"
+                    ></ion-back-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-grid>
+</ion-header>
+
+<ion-content class="ion-margin">
+    <ion-grid class="rating">
+        <ion-icon *ngFor="let item of [].constructor(fullStar)"
+                  class="star-icon"
+                  name="star"
+        ></ion-icon>
+        <ion-icon *ngIf="halfStar"
+                  class="star-icon"
+                  name="star-half"
+        ></ion-icon>
+        <ion-icon *ngFor="let item of [].constructor(emptyStar)"
+                  class="star-icon"
+                  name="star-outline"
+        ></ion-icon>
+        <ion-text class="rating-text">{{rating.toFixed(1)}}</ion-text>
+    </ion-grid>
+    <ion-grid class="outlet-desc">
+        <ion-text class="outlet-name">{{loadedOutlet.name}}</ion-text>
+        <ion-text class="outlet-location">{{loadedOutlet.location}}</ion-text>
+    </ion-grid>
+    <ion-list class="open-hours">
+        <ion-row class="single-open-hours" *ngFor="let singleDay of openHours, let i = index">
+            <ion-col>
+                <ion-text class="day-text">{{UIday[i]}}</ion-text>
+            </ion-col>
+            <ion-col>
+                <ion-text *ngIf="singleDay !== 'CLOSED'" class="hours-open-text">{{singleDay}}</ion-text>
+                <ion-text *ngIf="singleDay === 'CLOSED'" class="hours-close-text">{{singleDay}}</ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-list>
+    <ion-button class="ion-color-primary order-button" [routerLink]="['/input-items']" expand="block">CREATE AN ORDER</ion-button>
+    <ion-text class="outlet-name ion-padding" color="success">Reviews</ion-text>
+    <ion-list  *ngFor="let review of loadedOutlet.feedbacks | keyvalue">
+        <ion-item>
+            <ion-avatar slot="start">
+                <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+            </ion-avatar>
+            <ion-label>{{review.value}}</ion-label>
+        </ion-item>
+    </ion-list>
+    <br>
+    <ion-text *ngIf="loadedOutlet.feedbacks.length <= 0" class="ion-padding">
+        Be the first to review!
+    </ion-text>
+</ion-content>

@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button style="color: #ffffff" defaultHref='/input-items'></ion-back-button>
+      </ion-buttons>
+      <ion-title class="ion-title">Laundry Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-laundry-selection></app-laundry-selection>
+</ion-content>
+
+<lib-ionic-pullup (expanded)="footerExpanded()" (collapsed)="footerCollapsed()" [(state)]="footerState" [toolbarTopMargin]="200" [minBottomVisible]="0">
+    <ion-toolbar color="light" (click)="toggleFooter()" class="ion-bottom-toolbar" #ionDragFooter mode="ios">
+        <div class="ion-pullup-bar-container">
+            <div class="ion-pullup-bar"></div>
+        </div>
+    </ion-toolbar>
+    <ion-content>
+        <app-price-summary-card></app-price-summary-card>
+    </ion-content>
+</lib-ionic-pullup>

@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button style="color: #ffffff" defaultHref='/tabs/tab2'></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{orderDetail.DETAIL.SHIPPING.DESTINATION}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <h4 class="text-heading">ORDER ID : {{orderDetail.DETAIL.ORDERID}}</h4>
+    </ion-row>
+    <ion-row>
+        <h5 class="text-sub-heading">Laundry Details</h5>
+    </ion-row>
+<!-- GENERAL GROUP -->
+    <ion-item-group>
+      <ion-item-divider color="light">
+        <ion-label style="font-weight: bold;">General</ion-label>
+      </ion-item-divider>
+      <ion-list *ngFor="let item of orderDetail.NORMAL" lines="full">
+        <ion-item>
+          <ion-label slot="start">{{item.QTY}} x {{item.NAME}}</ion-label>
+          <ion-note slot="end">{{item.PRICE | currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-item-group>
+<!--  SPECIAL GROUP  -->
+    <ion-item-group>
+      <ion-item-divider color="light">
+        <ion-label style="font-weight: bold;">Special</ion-label>
+      </ion-item-divider>
+      <ion-list *ngFor="let item of orderDetail.SPECIAL" lines="full">
+        <ion-item>
+          <ion-label slot="start">{{item.QTY}} x {{item.NAME}}</ion-label>
+          <ion-note slot="end">{{item.PRICE | currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-item-group>
+<!--  OTHERS GROUP  -->
+    <ion-item-group>
+      <ion-item-divider color="light">
+        <ion-label style="font-weight: bold;">Others</ion-label>
+      </ion-item-divider>
+      <ion-list *ngFor="let item of orderDetail.OTHERS" lines="full">
+        <ion-item>
+          <ion-label slot="start">{{item.QTY}} x {{item.NAME}}</ion-label>
+          <ion-note slot="end">{{(OTHERS_PRICE * item.QTY) | currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-item-group>
+    <ion-item color="success">
+      <ion-label slot="start" style="font-weight: bold;">Total</ion-label>
+      <ion-note slot="end" style="color: #FFFFFF; font-size: 14px; font-weight: bold;">
+        {{ priceTotal | currency:"IDR":"symbol": "3.0": "id"}}
+      </ion-note>
+    </ion-item>
+  <!-- PICKUP & DELIVERY DETAILS -->
+    <ion-row>
+      <h5 class="text-sub-heading" style="margin-bottom: 0">Pickup & Delivery Information</h5>
+    </ion-row>
+    <ion-row class="ion-margin">
+      <ion-col class="ion-no-padding">
+        <ion-text class="text-bold">Origin</ion-text>
+        <br>
+        {{orderDetail.DETAIL.SHIPPING.ORIGIN}}
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <ion-text class="text-bold">Destination</ion-text>
+        <br>
+        {{orderDetail.DETAIL.SHIPPING.DESTINATION}}
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-margin-start">
+      <ion-text class="text-bold">Pickup</ion-text>
+    </ion-row>
+    <ion-row class="ion-margin-start">
+      {{this.shippingInfo.PICKUPTD}}
+    </ion-row>
+    <ion-row class="ion-margin-start">
+      <ion-text class="text-bold" >Delivery</ion-text>
+    </ion-row>
+    <ion-row class="ion-margin-start">
+      {{this.shippingInfo.DELIVERYTD}}
+    </ion-row>
+    <ion-row>
+      <h5 class="text-sub-heading">Progress</h5>
+    </ion-row>
+    <ion-list *ngFor="let item of orderDetail.DETAIL.PROGRESS">
+      <ion-item>
+        <ion-icon *ngIf="!item.STATUS" name="radio-button-off-outline" slot="start"></ion-icon>
+        <ion-icon *ngIf="item.STATUS" name="radio-button-on-outline" slot="start" color="success"></ion-icon>
+        <ion-label>{{item.NAME}}</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="full" (click)="onComplete()">COMPLETE ORDER</ion-button>
+  </ion-grid>
+</ion-content>

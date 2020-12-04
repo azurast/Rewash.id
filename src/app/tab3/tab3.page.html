@@ -16,24 +16,24 @@
     <div class="ion-profile-information">
       <ion-row >
         <ion-text>
-          <h6>Nama</h6>
+          <h6>{{user.name}}</h6>
         </ion-text>
       </ion-row>
       <ion-row >
-        <p>+62-xxx-xxx-xxx</p>
+        <p>{{ user.phoneNumber }}</p>
       </ion-row>
       <ion-row >
-        <p>example@email.com</p>
+        <p>{{ user.email }}</p>
       </ion-row>
       <ion-row >
-        <p>City, Province</p>
+        <p>{{ user.address[0]?.locationName || 'No Address Has Been Saved' }}</p>
       </ion-row>
       <ion-row>
         <ion-col size="3" class="ion-profile-button">
           <ion-button size="small">Edit</ion-button>
         </ion-col>
         <ion-col size="3" class="ion-profile-button">
-          <ion-button size="small" color="danger">Logout</ion-button>
+          <ion-button (click)="signOut()" size="small" color="danger">Logout</ion-button>
         </ion-col>
       </ion-row>
     </div>

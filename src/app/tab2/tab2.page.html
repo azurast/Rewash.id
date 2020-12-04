@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Order History
+      History
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,27 +9,30 @@
 <ion-content [fullscreen]="true">
 
   <!-- History Card-->
-  <ion-card>
-    <ion-card-content class="ion-card-history">
-      <ion-row>
-        <ion-col size="2.5">
-          <ion-avatar class="ion-history-icon">
-            <ion-img src="/assets/static/merchant/history.png"></ion-img>
-          </ion-avatar>
-        </ion-col>
-        <ion-col size="9.5">
-          <ion-row>
-            <ion-text color="dark" class="ion-outlet-name">
-              Nama Outlet
-            </ion-text>
-          </ion-row>
-          <ion-row>
-            <ion-text color="dark" class="ion-order-date">
-              Month dd, HH:MM XM
-            </ion-text>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
+  <ion-list *ngFor="let order of allOrders" class="ion-no-padding">
+    <ion-card (click)="goToOrderDetail(order)">
+      <ion-card-content class="ion-card-history">
+        <ion-row>
+          <ion-col size="2.5">
+            <ion-avatar class="ion-history-icon">
+              <ion-img src="/assets/static/merchant/history.png"></ion-img>
+            </ion-avatar>
+          </ion-col>
+          <ion-col size="9.5">
+            <ion-row>
+              <ion-text color="dark" class="ion-outlet-name">
+                {{order.DETAIL.SHIPPING.DESTINATION}}
+              </ion-text>
+            </ion-row>
+            <ion-row>
+              <ion-text color="dark" class="ion-order-date">
+                {{toDate(order.DETAIL.SHIPPING.PICKUPTD)}}
+              </ion-text>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
 </ion-content>

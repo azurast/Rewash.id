@@ -1,0 +1,39 @@
+.input-qty {
+  width: auto;
+  margin-left: 20px;
+  align-items: center;
+
+  .remove-icon {
+    color: var(--ion-color-danger);
+    width: 24px;
+    height: 24px;
+  }
+
+  .add-icon {
+    color: var(--ion-color-success);
+    width: 24px;
+    height: 24px;
+  }
+
+  .item-qty {
+    padding: 0 10px;
+    align-items: center;
+  }
+}
+
+.ion-button {
+  --background: #ffffff;
+}
+
+.next-button {
+  margin: 20px auto 10px;
+  color: white;
+  display: flex;
+  padding: 0 10px;
+  width: min-content;
+  justify-content: center;
+}
+
+.ion-toggle-button {
+  color: var(--ion-color-dark);
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<ion-content color="Poppins">
+
+  <div *ngIf="showSplash" class="awal" style="height: 100%; position: center; width: 100%; padding-top: 50%" >
+    <ion-grid>
+      <ion-row class="splash">
+        <ion-col size="8" size-md="8" offset="2">
+          <ion-img src="/assets/icon/REWASH_1.png"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-slides pager="true">
+    <ion-slide >
+      <ion-list class="cont">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8" size-md="8" offset="2" >
+              <ion-img src="/assets/icon/REWASH_2.png"></ion-img>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-md="12" offset="0">
+              <h3><b>Got No Time for Laundry?</b></h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="10" size-md="10" offset="1">
+              <h6>We understand that things get pretty busy, and time is of the essence. Chores can be pretty hard to keep up with.</h6>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-list class="cont">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8" size-md="8" offset="2" >
+              <ion-img src="/assets/icon/REWASH_3_1.png"></ion-img>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-md="12" offset="0">
+              <h3><b>No Worries, You Got Us</b></h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="10" size-md="10" offset="1">
+              <h6>Rewash is here for you, with smart washing and tracking system utilizing IOT. You can track you laundry anytime anywhere.</h6>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+    </ion-slide>
+
+    <ion-slide (click)="toLogin()" (swipeleft)="toLogin()">
+      <ion-list class="cont">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8" size-md="8" offset="2" >
+              <ion-img src="/assets/icon/REWASH_4.png"></ion-img>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-md="12" offset="0">
+              <h3><b>Tap, Send, Receive</b></h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="10" size-md="10" offset="1">
+              <h6>Freshly cleaned clothes just a tap away! It will be ready in no time, all you gotta do is send it and wait for us to deliver it back to you!</h6>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+    </ion-slide>
+
+
+  </ion-slides>
+
+</ion-content>

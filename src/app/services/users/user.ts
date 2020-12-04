@@ -1,6 +1,12 @@
+import { Address } from './address';
+
 export class User {
     id: string;
     name: string;
-    address: string;
-    constructor(id: string) {}
+    email: string;
+    phone: string;
+    address: Array<Address>;
+    imageUrl: string;
+    phoneNumber: string;
+    constructor() {}
 }

@@ -2,22 +2,24 @@
   <div *ngIf="isSignIn">
     <ion-grid>
       <!-- HEADER -->
-      <ion-row>
+<!--      <ion-img class="banner" src="../../assets/banner/Login.jpg"></ion-img>-->
+      <ion-row class="banner-login">
+
         <ion-row class="authentication-header">
           <ion-col size="6" offset="1">
             <h1>Welcome Back</h1>
           </ion-col>
-          <ion-col class="authentication-bubble">
-            <ion-img src="assets/static/authentication/bubble.png"></ion-img>
-          </ion-col>
-        </ion-row>
-        <ion-row class="authentication-basket">
-          <ion-col size="6">
-            <ion-img src="assets/static/authentication/blue-curve.png"></ion-img>
-          </ion-col>
-          <ion-col size="6">
-            <ion-img src="assets/static/authentication/laundry-basket.png"></ion-img>
-          </ion-col>
+<!--          <ion-col class="authentication-bubble">-->
+<!--            <ion-img src="assets/static/authentication/bubble.png"></ion-img>-->
+<!--          </ion-col>-->
+<!--        </ion-row>-->
+<!--        <ion-row class="authentication-basket">-->
+<!--          <ion-col size="6">-->
+<!--            <ion-img src="assets/static/authentication/blue-curve.png"></ion-img>-->
+<!--          </ion-col>-->
+<!--          <ion-col size="6">-->
+<!--            <ion-img src="assets/static/authentication/laundry-basket.png"></ion-img>-->
+<!--          </ion-col>-->
         </ion-row>
       </ion-row>
 
@@ -61,22 +63,22 @@
   </div>
   <div *ngIf="!isSignIn">
     <ion-grid>
-      <ion-row>
+      <ion-row class="banner-signup">
         <ion-row class="authentication-header">
           <ion-col size="6" offset="1">
             <h1>Create an Account</h1>
           </ion-col>
-          <ion-col class="authentication-bubble">
-            <ion-img src="assets/static/authentication/bubble.png"></ion-img>
-          </ion-col>
-        </ion-row>
-        <ion-row class="authentication-duck">
-          <ion-col size="6">
-            <ion-img src="assets/static/authentication/blue-curve.png"></ion-img>
-          </ion-col>
-          <ion-col size="6">
-            <ion-img src="assets/static/mascot/duck.svg" class="duck"></ion-img>
-          </ion-col>
+<!--          <ion-col class="authentication-bubble">-->
+<!--            <ion-img src="assets/static/authentication/bubble.png"></ion-img>-->
+<!--          </ion-col>-->
+<!--        </ion-row>-->
+<!--        <ion-row class="authentication-duck">-->
+<!--          <ion-col size="6">-->
+<!--            <ion-img src="assets/static/authentication/blue-curve.png"></ion-img>-->
+<!--          </ion-col>-->
+<!--          <ion-col size="6">-->
+<!--            <ion-img src="assets/static/mascot/duck.svg" class="duck"></ion-img>-->
+<!--          </ion-col>-->
         </ion-row>
       </ion-row>
       <form [formGroup]="signUpForm" (ngSubmit)="signUpUser(signUpForm.value)" >
@@ -96,6 +98,12 @@
           <ion-item>
             <ion-label position="floating">Password</ion-label>
             <ion-input type="password" formControlName="signup_password"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-label position="floating">Phone Number</ion-label>
+            <ion-input type="text" formControlName="signup_phone_number"></ion-input>
           </ion-item>
         </ion-row>
         <div class="buttons">

@@ -1,0 +1,114 @@
+<ion-grid scroll="true">
+  <!-- NORMAL ITEMS -->
+  <!-- HEADING  -->
+  <ion-row>
+    <ion-col size="10">
+      <h6>General</h6>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button (click)="toggleGeneralMenu()" fill="clear">
+        <ion-icon name="caret-down-outline" slot="icon-only" class="ion-toggle-button"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <!-- TOGGLE -->
+  <div *ngIf="isGeneralMenuHidden">
+    <ion-list *ngFor="let item of normalItems" lines="full" class="ion-no-padding">
+      <ion-item>
+        <ion-icon slot="start" name="shirt-outline"></ion-icon>
+        <ion-label>
+          <h3>{{item.NAME}}</h3>
+          <p>{{item.WEIGHT}} gr</p>
+        </ion-label>
+        <!--  QTY INPUT    -->
+        <div class="input-qty">
+          <ion-icon slot="start" name="remove-outline" class="remove-icon" (click)="onRemoveNormalItem(item.KEY)"></ion-icon>
+          <ion-text class="item-qty">{{item.QTY}}</ion-text>
+          <ion-icon slot="end" name="add-outline" class="add-icon" (click)="onAddNormalItem(item.KEY)"></ion-icon>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+  <!-- SPECIAL ITEMS -->
+  <!-- HEADING  -->
+  <ion-row>
+    <ion-col size="10">
+      <h6>Special</h6>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button (click)="toggleSpecialMenu()" fill="clear">
+        <ion-icon name="caret-down-outline" slot="icon-only" class="ion-toggle-button"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <!-- TOGGLE -->
+  <div *ngIf="isSpecialMenuHidden">
+    <ion-list *ngFor="let item of specialItems" lines="full" class="ion-no-padding">
+      <ion-item>
+        <ion-icon slot="start" name="shirt-outline"></ion-icon>
+        <ion-label>
+          <h3>{{item.NAME}}</h3>
+          <p>{{item.PRICE | currency:"IDR":"symbol": "3.0": "id"}}</p>
+        </ion-label>
+        <!--  QTY INPUT    -->
+        <div class="input-qty">
+          <ion-icon slot="start" name="remove-outline" class="remove-icon" (click)="onRemoveSpecialItem(item.KEY)"></ion-icon>
+          <ion-text class="item-qty">{{item.QTY}}</ion-text>
+          <ion-icon slot="end" name="add-outline" class="add-icon" (click)="onAddSpecialItem(item.KEY)"></ion-icon>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+  <!-- OTHER ITEMS -->
+  <!-- HEADING  -->
+  <ion-row>
+    <ion-col size="10">
+      <h6>Others</h6>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button (click)="toggleOthersMenu()" fill="clear">
+        <ion-icon name="caret-down-outline" slot="icon-only" class="ion-toggle-button"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <!-- TOGGLE -->
+  <div *ngIf="isOthersMenuHidden">
+    <form [formGroup]="addOtherItemForm" (ngSubmit)="addOtherItem(addOtherItemForm.value)" >
+      <ion-row>
+        <ion-col size="8">
+          <ion-label position="fixed">Item Name</ion-label>
+          <ion-input type="text" formControlName="other_item_name"></ion-input>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label position="fixed">Qty</ion-label>
+          <ion-input type="number" formControlName="other_item_qty"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-button expand="full" color="success" type="submit">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </form>
+    <ion-list *ngFor="let item of otherItems" lines="full" class="ion-no-padding">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-icon slot="start" name="shirt-outline"></ion-icon>
+          <ion-label>
+            <h3>{{item.NAME}}</h3>
+          </ion-label>
+          <!--  QTY INPUT    -->
+          <div class="input-qty">
+            <ion-icon slot="start" name="remove-outline" class="remove-icon" (click)="onRemoveOtherItem(item.KEY)"></ion-icon>
+            <ion-text class="item-qty">{{item.QTY}}</ion-text>
+            <ion-icon slot="end" name="add-outline" class="add-icon" (click)="onAddOtherItem(item.KEY)"></ion-icon>
+          </div>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option (click)="deleteOtherItem(item.KEY)" color="danger">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
+  <ion-button expand="full" (click)="calculateCart()" color="danger">NEXT (TEST SERVICE)</ion-button>
+</ion-grid>

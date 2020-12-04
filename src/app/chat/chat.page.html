@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button style="color: #ffffff" defaultHref='/tabs/tab1'></ion-back-button>
+        </ion-buttons>
+        <ion-title class="outlet-name">{{outletName}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="chat-container">
+        <ion-row *ngFor="let chat of loadedChat">
+            <ion-col *ngIf="chat.sender !== uid" size="8" class="chat-box chat-outlet">
+                <ion-text>{{chat.message}}</ion-text>
+                <ion-row>
+                    <ion-col class="chat-time" size="2.5" offset="9.5">{{chat.time}}</ion-col>
+                </ion-row>
+            </ion-col>
+            <ion-col *ngIf="chat.sender === uid" size="8" offset="3.5" class="chat-box chat-user">
+                <ion-text>{{chat.message}}</ion-text>
+                <ion-row>
+                    <ion-col class="chat-time" size="2.5" offset="9.5">{{chat.time}}</ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </div>
+    <div class="text-area-container">
+        <ion-row class="text-area-chat">
+            <ion-textarea rows="2"
+                          cols="20"
+                          placeholder="Write message..."
+                          class="text-area-edit"
+                          [(ngModel)]="message"
+            >
+            </ion-textarea>
+            <ion-buttons class="button-send">
+                <ion-button (click)="handleSendMessage()">
+                    <ion-icon name="send"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-row>
+    </div>
+</ion-content>
+
+<ion-footer>
+
+</ion-footer>

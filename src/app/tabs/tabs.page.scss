@@ -1,1 +1,20 @@
+// GLOBAL
+ion-tab-bar {
+  --background: var(--ion-color-light-tint);;
+}
+
+ion-tab-button {
+  --color: var(--ion-color-medium);
+  --color-focused: var(--ion-color-light);
+  --color-selected: var(--ion-color-primary-shade);
+
+  &[aria-selected="true"] {
+    ion-icon {
+      color: var(--ion-color-secondary) !important;
+      /* --ion-color-base: var(--ion-color-secondary) !important; */
+    }
+  }
+}
+
+
 

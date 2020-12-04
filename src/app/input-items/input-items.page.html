@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="../components/price-summary-card/price-summary-card.component.scss">
+<link rel="stylesheet" href="input-items.page.scss">
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button style="color: #ffffff" defaultHref='/outlet'></ion-back-button>
+    </ion-buttons>
+    <ion-title>Input Items</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-input-dropdown></app-input-dropdown>
+</ion-content>
+
+<lib-ionic-pullup (expanded)="footerExpanded()" (collapsed)="footerCollapsed()" [(state)]="footerState" [toolbarTopMargin]="470" [minBottomVisible]="0">
+  <ion-toolbar color="light" (click)="toggleFooter()" class="ion-bottom-toolbar" #ionDragFooter mode="ios">
+    <div class="ion-pullup-bar-container">
+      <div class="ion-pullup-bar"></div>
+    </div>
+  </ion-toolbar>
+  <ion-content>
+    <app-price-summary-card></app-price-summary-card>
+  </ion-content>
+</lib-ionic-pullup>

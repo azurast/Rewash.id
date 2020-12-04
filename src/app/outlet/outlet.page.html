@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button style="color: #ffffff" defaultHref='/tabs/tab1'></ion-back-button>
+        </ion-buttons>
+        <ion-title class="ion-title">Find an Outlet</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-input class="search-bar"
+               placeholder="Cluster Allogio"
+    >
+        <ion-icon name="location"
+                  slot="start"
+                  size="small"
+                  class="icon-search ion-color-secondary"
+        ></ion-icon>
+    </ion-input>
+    <ion-text class="outlet-near-text">Rewash outlet near you:</ion-text>
+    <ion-list class="outlet-list-container">
+        <ion-item *ngFor="let singleOutlet of outlet" class="single-outlet" [routerLink]="['./', singleOutlet.id]">
+            <ion-avatar>
+                <ion-img src="assets/icon/logolaundry.png"></ion-img>
+            </ion-avatar>
+            <div class="outlet-description">
+                <ion-text class="outlet-name">{{singleOutlet.name}}</ion-text>
+                <ion-text class="outlet-location">{{singleOutlet.distance.toFixed(1) + " KM"}}</ion-text>
+            </div>
+        </ion-item>
+    </ion-list>
+</ion-content>

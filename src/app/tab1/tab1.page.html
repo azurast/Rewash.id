@@ -1,20 +1,4 @@
-<!--<ion-header [translucent]="true">-->
-<!--  <ion-toolbar>-->
-<!--    <ion-title>-->
-<!--      Home-->
-<!--    </ion-title>-->
-<!--  </ion-toolbar>-->
-<!--</ion-header>-->
-
 <ion-content [fullscreen]="true">
-<!--  <ion-header collapse="condense">-->
-<!--    <ion-toolbar>-->
-<!--      <ion-title size="large">Home</ion-title>-->
-<!--    </ion-toolbar>-->
-<!--  </ion-header>-->
-
-<!--  <app-explore-container name="Tab 1 page">-->
-<!--  </app-explore-container>-->
   <ion-content>
     <!-- Hello Message -->
     <ion-grid class="ion-hello-message">
@@ -22,7 +6,7 @@
         <ion-col size="9">
           <div class="ion-though-bubble">
             <ion-text>
-              Hallo John Doe
+              Hallo {{user.name}}
             </ion-text>
           </div>
         </ion-col>
@@ -33,58 +17,66 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <!--  Banner -->
-    <ion-card class="ion-card-banner">
-      <ion-img src="/assets/static/promotions/banner1.png"></ion-img>
-    </ion-card>
+    <!--  Carousel -->
+    <ion-slides pager="true">
+      <ion-slide>
+        <ion-img src="/assets/static/promotions/banner1.png"></ion-img>
+      </ion-slide>
+      <ion-slide>
+        <ion-img src="/assets/static/promotions/banner2.png"></ion-img>
+      </ion-slide>
+      <ion-slide>
+        <ion-img src="/assets/static/promotions/banner3.png"></ion-img>
+      </ion-slide>
+    </ion-slides>
 
-    <!-- Location Search -->
-    <ion-searchbar
-      showCancelButton="focus"
-      search-icon="location"
-      cancel-button-icon="close"
-      class="ion-search-location"
-    >
-    </ion-searchbar>
+        <!-- Location Search -->
+        <ion-searchbar
+                showCancelButton="focus"
+                search-icon="location"
+                cancel-button-icon="close"
+                class="ion-search-location"
+        >
+        </ion-searchbar>
 
-    <!-- Ongoing Orders -->
-    <ion-grid>
-      <!-- Text -->
-      <ion-text color="dark" class="ion-title">
-        Ongoing Orders
-      </ion-text>
+        <!-- Ongoing Orders -->
+        <ion-grid>
+            <!-- Text -->
+            <ion-text color="dark" class="ion-title">
+                Ongoing Orders
+            </ion-text>
 
-      <!-- Card -->
-      <!-- Empty Card -->
-      <ion-card>
-        <ion-card-content class="ion-card-create-order">
-            <h2>Create an Order</h2>
-            <ion-icon name="add-circle"></ion-icon>
-        </ion-card-content>
-      </ion-card>
+            <!-- Card -->
+            <!-- Empty Card -->
+            <ion-card [routerLink]="['/outlet']">
+                <ion-card-content class="ion-card-create-order">
+                    <h2>Create an Order</h2>
+                    <ion-icon name="add-circle"></ion-icon>
+                </ion-card-content>
+            </ion-card>
 
-      <!-- With Content Card -->
-      <ion-card>
-        <ion-card-header>
-          <ion-card-subtitle>Rewash Merchant Name</ion-card-subtitle>
-        </ion-card-header>
+            <!-- With Content Card -->
+            <ion-card *ngFor="let order of ongoingOrders">
+                <ion-card-header>
+                    <ion-card-subtitle>{{order.outlet_name}}</ion-card-subtitle>
+                </ion-card-header>
 
-        <ion-card-content>
-          Stepper
-        </ion-card-content>
-        <ion-grid class="ion-order-card">
-          <ion-row>
-            <ion-col size="9" class="ion-order-card-status">
-              <ion-text>
-                <h6>Status</h6>
-              </ion-text>
-            </ion-col>
-            <ion-col size="3" class="ion-order-card-chat">
-              <ion-icon name="chatbubbles"></ion-icon>
-            </ion-col>
-          </ion-row>
+                <ion-card-content>
+                    Stepper
+                </ion-card-content>
+                <ion-grid class="ion-order-card">
+                    <ion-row>
+                        <ion-col size="9" class="ion-order-card-status">
+                            <ion-text>
+                                <h6>{{order.order_status}}</h6>
+                            </ion-text>
+                        </ion-col>
+                        <ion-col size="3" class="ion-order-card-chat" [routerLink]="['/chat/', order.id]">
+                            <ion-icon name="chatbubbles"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card>
         </ion-grid>
-      </ion-card>
-    </ion-grid>
-  </ion-content>
+    </ion-content>
 </ion-content>
