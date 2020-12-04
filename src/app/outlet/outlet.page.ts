@@ -62,9 +62,7 @@ export class OutletPage implements OnInit {
 
   ngOnInit() {
     this.fetchOutletFromDatabase();
-    // setTimeout(() => this.outlet.sort((a, b) => (a.distance > b.distance) ? 1 : -1), 2000);
-    console.log(this.outlet);
-    this.outlet.sort((a, b) => (a.distance > b.distance) ? 1 : -1);
+    setTimeout(() => this.outlet.sort((a, b) => (a.distance > b.distance) ? 1 : -1), 2000);
     this.outletService.storeOutlet(this.outlet);
   }
 

@@ -1,7 +1,8 @@
 export interface Order {
   id: string;
   orderDetails: {};
-  orderStatus: string;
-  outletId: string;
-  outletName: string;
+  normal: {};
+  others: {};
+  special: {};
+  finished: boolean
 }
