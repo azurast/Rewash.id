@@ -43,6 +43,9 @@ export class LaundrySelectionComponent implements OnInit {
       REQUEST_BAG: value.bag,
       NOTES: value.notes
     };
+    if (value.bag === true) {
+      this.orderDetail.DETAIL.PRICE[4].PRICE += 5000;
+    }
     this.orderService.setOrderData(this.orderDetail);
   }
 }
