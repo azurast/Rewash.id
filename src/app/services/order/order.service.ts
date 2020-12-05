@@ -1,10 +1,8 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { OrderDetail } from '../../../constants/order-model';
 import { Router } from '@angular/router';
-import { distinctUntilChanged } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import {UserService} from '../users/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +12,8 @@ export class OrderService {
   ordersRef: AngularFireList<OrderDetail> = null;
   dbRef: any;
   orderDataSource = new BehaviorSubject<OrderDetail>({
-    id: '',
+    // TODO PAS NGE SET LOKASI PICKUP & DELIVERY JGN LUPA SET CURRENT USER ID
+    id: 'ONuPibfPl1aHoQRF0RDb2h7XOPS2',
     finished: false,
     NORMAL: [],
     SPECIAL: [],
@@ -62,7 +61,7 @@ export class OrderService {
         // GET FROM OUTLET ADDRESS
         DESTINATION: '',
         // GET FROM OUTLET ID
-        OUTLETID: 'o1',
+        OUTLETID: '',
         // GET FROM USER SERVICE (THIS CURRENT LOGGED IN USER)
         USERID: '',
         NOTES: ''
@@ -138,5 +137,11 @@ export class OrderService {
         .once('value').then((dataSnapshot) => {
           return dataSnapshot.val();
         });
+  }
+
+  addToDb(orderDetail) {
+    const { id: userId } = orderDetail;
+    this.dbRef = this.db.database.ref().child('orders');
+    this.dbRef.child(`${userId}`).push({...orderDetail});
   }
 }
