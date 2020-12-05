@@ -1,4 +1,4 @@
-import {Item} from './item-model';
+import { Item } from './item-model';
 
 export class OrderDetail {
     id: string;
@@ -19,7 +19,10 @@ export class OrderDetail {
                 PRICE: number
             }
         >;
-        WEIGHT: object;
+        WEIGHT: {
+            normalItemsEstWeightTotal: number,
+            specialItemsEstWeightTotal: number
+        };
         SHIPPING: {
             DELIVERYTD: string;
             PICKUPTD: string;

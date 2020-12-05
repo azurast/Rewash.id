@@ -1,4 +1,5 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ALL_ITEMS } from '../../../constants/items-pricing';
 import { Item } from '../../../constants/item-model';
 import { CurrencyPipe } from '@angular/common';
@@ -9,6 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 registerLocaleData(localeId, 'id');
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { OrderDetail } from '../../../constants/order-model';
 import { OrderService } from '../../services/order/order.service';
 
 @Component({
@@ -27,6 +29,8 @@ export class InputDropdownComponent implements OnInit {
   addOtherItemForm: FormGroup;
   count: number;
   hasAlertBeenShown: boolean;
+  orderDetail: OrderDetail;
+  orderDetailSub: Subscription;
 
   constructor(
       public toastController: ToastController,
@@ -36,6 +40,10 @@ export class InputDropdownComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.orderDetailSub = this.orderService.getOrderData()
+      .subscribe((orderData) => {
+        this.orderDetail = orderData;
+      });
     this.count = 0;
     this.hasAlertBeenShown = false;
     this.normalItems = ALL_ITEMS.NORMAL_ITEMS;
@@ -121,36 +129,17 @@ export class InputDropdownComponent implements OnInit {
     normalItemsPriceTotal = 10000 * (normalItemsEstWeightTotal / 1000);
     totalOrderPrice = specialItemsPriceTotal + normalItemsPriceTotal + otherItemsPriceTotal;
 
-    const cart = {
-      SPECIAL : [...specialItemsRes],
-      NORMAL: [...normalItemsRes],
-      OTHERS: [...otherItemsRes],
-      DETAIL: {
-        PRICE : [
-          {
-            NAME: 'Special Items Price',
-            PRICE: specialItemsPriceTotal,
-          },
-          {
-            NAME: 'Normal Items Price',
-            PRICE: normalItemsPriceTotal,
-          },
-          {
-            NAME: 'Other Items Price',
-            PRICE: otherItemsPriceTotal,
-          },
-          {
-            NAME: 'Total Order Price',
-            PRICE: totalOrderPrice,
-          }
-        ],
-        WEIGHT: {
-          normalItemsEstWeightTotal: Math.ceil(normalItemsEstWeightTotal / 1000),
-          specialItemsEstWeightTotal: Math.ceil(specialItemsEstWeightTotal / 1000)
-        }
-      }
-    };
-    this.orderService.setOrderData(cart);
+    this.orderDetail.NORMAL = normalItemsRes;
+    this.orderDetail.SPECIAL = specialItemsRes;
+    this.orderDetail.OTHERS = otherItemsRes;
+    this.orderDetail.DETAIL.PRICE[0].PRICE = specialItemsPriceTotal;
+    this.orderDetail.DETAIL.PRICE[1].PRICE = normalItemsPriceTotal;
+    this.orderDetail.DETAIL.PRICE[2].PRICE = otherItemsPriceTotal;
+    this.orderDetail.DETAIL.PRICE[4].PRICE = totalOrderPrice;
+    this.orderDetail.DETAIL.WEIGHT.normalItemsEstWeightTotal = Math.ceil(normalItemsEstWeightTotal / 1000);
+    this.orderDetail.DETAIL.WEIGHT.specialItemsEstWeightTotal = Math.ceil(specialItemsEstWeightTotal / 1000);
+
+    this.orderService.setOrderData(this.orderDetail);
   }
 
   onAddOtherItem(key: any) {
