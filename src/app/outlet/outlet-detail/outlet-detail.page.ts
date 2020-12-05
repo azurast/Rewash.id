@@ -20,6 +20,7 @@ export class OutletDetailPage implements OnInit {
   day: string[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   UIday: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   reviews: any;
+  isReviewOpen: boolean = false;
 
   constructor(
       private activatedRoute: ActivatedRoute,
@@ -58,6 +59,14 @@ export class OutletDetailPage implements OnInit {
       }
       this.renderOpenHours();
     });
+  }
+
+  handleOpenReview() {
+    this.isReviewOpen = true;
+  }
+
+  handleCloseReview() {
+    this.isReviewOpen = false;
   }
 
 }

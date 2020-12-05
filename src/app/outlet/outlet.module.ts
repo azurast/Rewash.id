@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { OutletPageRoutingModule } from './outlet-routing.module';
 
 import { OutletPage } from './outlet.page';
+import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    OutletPageRoutingModule
+    OutletPageRoutingModule,
+    GooglePlaceModule
   ],
   declarations: [OutletPage]
 })
