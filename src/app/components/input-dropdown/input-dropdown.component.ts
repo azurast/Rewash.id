@@ -129,9 +129,9 @@ export class InputDropdownComponent implements OnInit {
     normalItemsPriceTotal = 10000 * (normalItemsEstWeightTotal / 1000);
     totalOrderPrice = specialItemsPriceTotal + normalItemsPriceTotal + otherItemsPriceTotal;
 
-    this.orderDetail.NORMAL = [...this.normalItems];
-    this.orderDetail.SPECIAL = [...this.specialItems];
-    this.orderDetail.OTHERS = [...this.otherItems];
+    this.orderDetail.NORMAL = normalItemsRes;
+    this.orderDetail.SPECIAL = specialItemsRes;
+    this.orderDetail.OTHERS = otherItemsRes;
     this.orderDetail.DETAIL.PRICE[0].PRICE = specialItemsPriceTotal;
     this.orderDetail.DETAIL.PRICE[1].PRICE = normalItemsPriceTotal;
     this.orderDetail.DETAIL.PRICE[2].PRICE = otherItemsPriceTotal;
