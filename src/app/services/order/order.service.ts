@@ -14,6 +14,8 @@ export class OrderService {
   ordersRef: AngularFireList<OrderDetail> = null;
   dbRef: any;
   orderDataSource = new BehaviorSubject<OrderDetail>({
+    id: '',
+    finished: false,
     NORMAL: [],
     SPECIAL: [],
     OTHERS: [],
@@ -110,6 +112,7 @@ export class OrderService {
     this.orderDataStreams = newData;
     this.orderDataSource.next(newData);
     console.log('===AFTER SET this.orderDataStreams', this.orderDataStreams);
+    console.log('===AFTER SET this.orderDataSource', this.orderDataSource);
   }
 
   getOrderData() {
