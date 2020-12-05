@@ -112,8 +112,11 @@ export class PriceSummaryCardComponent implements OnInit {
   updateOrderDetail() {
     this.orderDetail.DETAIL.SHIPPING.PICKUPTD = this.pickupDate;
     this.orderDetail.DETAIL.SHIPPING.DELIVERYTD = this.deliveryDate;
-    console.log('===pickup date', this.pickupDate);
-    console.log('===delivery date', this.deliveryDate);
+    this.orderService.setOrderData(this.orderDetail);
+  }
+
+  addToDb() {
+    this.orderService.addToDb(this.orderDetail);
   }
 
   onNextClick() {
@@ -130,6 +133,7 @@ export class PriceSummaryCardComponent implements OnInit {
       }
       case '/delivery-details': {
         this.updateOrderDetail();
+        this.addToDb();
         alert('=== mau ke splashscreen loading');
         break;
       }
