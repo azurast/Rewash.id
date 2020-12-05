@@ -8,9 +8,9 @@ import { OTHER_PRICE } from '../../constants/other-price';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { User} from '../services/users/user';
+import { User } from '../services/users/user';
 import { UserService } from '../services/users/user.service';
-import { NavController } from "@ionic/angular";
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-order-detail',
@@ -56,7 +56,6 @@ export class OrderDetailPage implements OnInit{
 
   async presentAlertPrompt() {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
       animated: true,
       backdropDismiss: true,
       header: 'Complete Order?',
