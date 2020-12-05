@@ -30,6 +30,7 @@
     "foreach": "^2.0.5",
     "hammerjs": "^2.0.8",
     "ionic-pullup": "^5.0.0-beta.3",
+    "ngx-google-places-autocomplete": "^2.0.5",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
