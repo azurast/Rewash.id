@@ -149,7 +149,7 @@ export class PriceSummaryCardComponent implements OnInit {
       case '/delivery-details': {
         this.updateOrderDetail();
         this.addToDb();
-        alert('=== mau ke splashscreen loading');
+        this.router.navigate(['/tab/tabs1'])
         break;
       }
     }
