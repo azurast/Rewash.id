@@ -36,7 +36,6 @@ export class OutletPage implements OnInit {
     this.inputLatitude = address.geometry.location.lat();
     this.inputLongitude = address.geometry.location.lng();
     this.inputLocation = address.formatted_address;
-    console.log(address)
 
     this.fetchOutletFromDatabase();
     setTimeout(() => this.outlet.sort((a, b) => (a.distance > b.distance) ? 1 : -1), 2000);

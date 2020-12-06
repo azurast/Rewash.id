@@ -114,30 +114,28 @@ export class OrderService {
   setOrderData(newData) {
     this.orderDataStreams = newData;
     this.orderDataSource.next(newData);
-    console.log('===AFTER SET this.orderDataStreams', this.orderDataStreams);
-    console.log('===AFTER SET this.orderDataSource', this.orderDataSource);
   }
 
   getOrderData() {
     return this.orderDataSource.asObservable();
   }
 
-  getOngoingOrder(user: any): Promise<any> {
-    /* Disini harusnya nerima user id dari tab1.page.ts
-    * cuman ntah kenapa hasilnya tuh evaluated pas runtime jad undefined pas dikirim
-    * kalau di console log 'Value Evaluated Just Now' messagenya
-    * belum tau gimana cara dapetin langsung objectnya, kalo baca-baca sih katanya
-    * harus pake subscribe tp belom cek
-    * nanti harusnya jadi
-    * this.db
-    * .database.ref('orders/' + user.id) ........
-    * */
-    // console.log('===user', user);
-    return this.db.database.ref('orders/ONuPibfPl1aHoQRF0RDb2h7XOPS2')
-      .once('value').then((dataSnapshot) => {
-        return dataSnapshot.val();
-      });
-  }
+  // getOngoingOrder(user: any): Promise<any> {
+  //   /* Disini harusnya nerima user id dari tab1.page.ts
+  //   * cuman ntah kenapa hasilnya tuh evaluated pas runtime jad undefined pas dikirim
+  //   * kalau di console log 'Value Evaluated Just Now' messagenya
+  //   * belum tau gimana cara dapetin langsung objectnya, kalo baca-baca sih katanya
+  //   * harus pake subscribe tp belom cek
+  //   * nanti harusnya jadi
+  //   * this.db
+  //   * .database.ref('orders/' + user.id) ........
+  //   * */
+  //   // console.log('===user', user);
+  //   return this.db.database.ref('orders/ONuPibfPl1aHoQRF0RDb2h7XOPS2')
+  //     .once('value').then((dataSnapshot) => {
+  //       return dataSnapshot.val();
+  //     });
+  // }
 
   addToDb(orderDetail: any, userId: string) {
     this.dbRef = this.db.database.ref().child('orders');

@@ -27,9 +27,7 @@ export class AuthenticationPage implements OnInit {
 
   ngOnInit() {
     this.auth.onAuthStateChanged((user) => {
-      // console.log('===user', user);
       if (user) {
-        console.log('authhh', user.uid);
         this.userService.storeLoggedUser(user.uid);
         this.router.navigateByUrl('tabs/tab1');
         this.currentUser = user;

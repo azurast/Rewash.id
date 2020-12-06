@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { OrderDetail } from '../../constants/order-model';
-import { CurrencyPipe } from '@angular/common';
-import { registerLocaleData } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {OrderDetail} from '../../constants/order-model';
+import {registerLocaleData} from '@angular/common';
 import localeId from '@angular/common/locales/id';
+import {OTHER_PRICE} from '../../constants/other-price';
+import {ActivatedRoute} from '@angular/router';
+import {AlertController, NavController} from '@ionic/angular';
+import {AngularFireDatabase} from '@angular/fire/database';
+import {User} from '../services/users/user';
+import {UserService} from '../services/users/user.service';
+
 registerLocaleData(localeId, 'id');
-import { OTHER_PRICE } from '../../constants/other-price';
-import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { User } from '../services/users/user';
-import { UserService } from '../services/users/user.service';
-import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-order-detail',
@@ -18,19 +17,21 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./order-detail.page.scss'],
 })
 
-export class OrderDetailPage implements OnInit{
+export class OrderDetailPage implements OnInit {
   orderDetail: OrderDetail;
   priceTotal: number;
   shippingInfo: any;
   OTHERS_PRICE: number;
   user: User;
+
   constructor(
-      private activatedRoute: ActivatedRoute,
-      private navCtrl: NavController,
-      private alertController: AlertController,
-      private db: AngularFireDatabase,
-      private userService: UserService
-  ) { }
+    private activatedRoute: ActivatedRoute,
+    private navCtrl: NavController,
+    private alertController: AlertController,
+    private db: AngularFireDatabase,
+    private userService: UserService
+  ) {
+  }
 
   formatDateAndTime(shippingInfo: object) {
     // @ts-ignore
@@ -47,8 +48,7 @@ export class OrderDetailPage implements OnInit{
     this.user = this.userService.getLoggedInUser();
     this.OTHERS_PRICE = OTHER_PRICE;
     this.activatedRoute.queryParams.subscribe(params => {
-      const data = JSON.parse(params.data);
-      this.orderDetail = data;
+      this.orderDetail = JSON.parse(params.data);
       this.priceTotal = this.orderDetail.DETAIL.PRICE.find((each) => each.NAME === 'Total Order Price').PRICE;
       this.shippingInfo = this.formatDateAndTime(this.orderDetail.DETAIL.SHIPPING);
     });
@@ -64,7 +64,7 @@ export class OrderDetailPage implements OnInit{
         {
           name: 'rating',
           type: 'number',
-          placeholder: '1-5'
+          placeholder: '1-5 *Required'
         },
         {
           name: 'feedback',
@@ -84,62 +84,65 @@ export class OrderDetailPage implements OnInit{
         }, {
           text: 'Ok',
           handler: (data) => {
-            const { rating, feedback } = data;
-            /* Buat nampung previous values nya
-            * OUTLET :
-            *   prevRating (points)
-            *   transactionCount (transactions)
-            * ORDER :
-            *   prevProgress (DETAIL.PROGRESS)
-            *   index (index order si pengguna yang mau diubah)
-            * */
-            let prevRating;
-            let transactionCount;
-            let prevProgress;
-            let index;
-            /* Kalau complete order semuanya kan harus true,
-            * jadi temp object utk set semua STATUS dlm array jadi true kemudian dikirim buat di update
-            * */
-            const newProgress = [];
-            // Outlet Reference
-            const outletRef = this.db.database.ref('outlet/' + this.orderDetail.DETAIL.SHIPPING.OUTLETID);
-            // Order Reference
-            const orderRef = this.db.database.ref('orders/' + this.user.id)
+            if (data.rating !== "") {
+              const {rating, feedback} = data;
+              /* Buat nampung previous values nya
+              * OUTLET :
+              *   prevRating (points)
+              *   transactionCount (transactions)
+              * ORDER :
+              *   prevProgress (DETAIL.PROGRESS)
+              *   index (index order si pengguna yang mau diubah)
+              * */
+              let prevRating;
+              let transactionCount;
+              let prevProgress;
+              let index;
+              /* Kalau complete order semuanya kan harus true,
+              * jadi temp object utk set semua STATUS dlm array jadi true kemudian dikirim buat di update
+              * */
+              const newProgress = [];
+              // Outlet Reference
+              const outletRef = this.db.database.ref('outlet/' + this.orderDetail.DETAIL.SHIPPING.OUTLETID);
+              // Order Reference
+              const orderRef = this.db.database.ref('orders/' + this.user.id)
                 .orderByChild('DETAIL/ORDERID')
                 .equalTo(this.orderDetail.DETAIL.ORDERID);
-            try {
-              // Set all PROGRESS STATUS to TRUE
-              orderRef.once('value').then((dataSnapshot) => {
-                index = dataSnapshot.val().findIndex((obj) => obj?.DETAIL !== undefined);
-                prevProgress = dataSnapshot.val().filter((obj) => !obj.isEmpty)[0].DETAIL.PROGRESS;
-              }).then(() => {
-                prevProgress.forEach((item) => {
-                  newProgress.push({
-                    NAME: item.NAME,
-                    STATUS: true
+              try {
+                // Set all PROGRESS STATUS to TRUE
+                orderRef.once('value').then((dataSnapshot) => {
+                  console.log(dataSnapshot.val())
+                  index = dataSnapshot.val().findIndex((obj) => obj?.DETAIL !== undefined);
+                  prevProgress = dataSnapshot.val().filter((obj) => !obj.isEmpty)[0].DETAIL.PROGRESS;
+                }).then(() => {
+                  prevProgress.forEach((item) => {
+                    newProgress.push({
+                      NAME: item.NAME,
+                      STATUS: true
+                    });
                   });
-                });
-                this.db.database.ref('orders/' + this.user.id.concat(`/${index}/DETAIL`))
+                  this.db.database.ref('orders/' + this.user.id.concat(`/${index}/DETAIL`))
                     .update({
                       PROGRESS: newProgress
                     });
-              });
-              // Update data mengenai outlet setelah mendapatkan feedback & rating
-              outletRef.once('value').then((dataSnaphot) => {
-                prevRating = dataSnaphot.val().points;
-                transactionCount = dataSnaphot.val().transactions;
-              }).then(() => {
-                outletRef.update({
-                  // tslint:disable-next-line:radix
-                  points: (prevRating + parseInt(rating)),
-                  transactions: ++transactionCount
                 });
-                outletRef.child('feedbacks').push(feedback);
-              });
-            } catch (e) {
-              console.log('===Error', e);
-            } finally {
-              this.navCtrl.navigateBack('/tabs/tab2');
+                // Update data mengenai outlet setelah mendapatkan feedback & rating
+                outletRef.once('value').then((dataSnaphot) => {
+                  prevRating = dataSnaphot.val().points;
+                  transactionCount = dataSnaphot.val().transactions;
+                }).then(() => {
+                  outletRef.update({
+                    // tslint:disable-next-line:radix
+                    points: (prevRating + parseInt(rating)),
+                    transactions: ++transactionCount
+                  });
+                  outletRef.child('feedbacks').push(feedback);
+                });
+              } catch (e) {
+                console.log('===Error', e);
+              } finally {
+                this.navCtrl.navigateBack('/tabs/tab1');
+              }
             }
           }
         }
@@ -148,7 +151,9 @@ export class OrderDetailPage implements OnInit{
 
     await alert.present();
   }
+
   onComplete() {
+    console.log(this.orderDetail)
     this.presentAlertPrompt();
   }
 }
