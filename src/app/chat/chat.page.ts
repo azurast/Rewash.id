@@ -9,7 +9,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
-export class ChatPage implements OnInit, AfterViewChecked {
+export class ChatPage implements OnInit {
   @ViewChild('scrollChat') private myScrollContainer: ElementRef;
   @ViewChildren('chatContainer') chatContainers: QueryList<ElementRef>;
   outletName: string;
@@ -27,37 +27,51 @@ export class ChatPage implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
+    let uid: string;
     this.activatedRoute.paramMap.subscribe(paramMap => {
       if (!paramMap.has('idOrder')) {
         return;
       }
 
-      this.auth.onAuthStateChanged((user) => {
-        this.uid = user.uid;
-      }).then(() => {
-        this.orderId = paramMap.get('idOrder');
-        console.log("ord", this.orderId)
-        let orderId = this.orderId;
-        console.log('/orders/' + this.uid + "/" + this.orderId)
-        this.db.object('/orders/' + this.uid + "/" + this.orderId).valueChanges().subscribe((data: any) => {
-          this.idOutlet = data.DETAIL.OUTLETID;
-        })
+      this.orderId = paramMap.get('idOrder');
 
+      this.auth.onAuthStateChanged((user) => {
+        uid = user.uid;
+        this.uid = user.uid
+      }).then(() => {
         this.db.list('/chat/').query.orderByKey().equalTo(this.orderId).once('value').then(
           (data: any) => {
+            let orderId: string;
+            let outletName: string;
+            let outletId: string;
+
             if (data.val()) {
+              orderId = paramMap.get('idOrder');
               this.fetchingChat()
             } else {
-              this.db.database.ref().child('chat/').child(`${orderId}`).set({
-                id_outlet: this.idOutlet,
-                user: this.uid,
-                outlet_name: this.outletName,
-                chat: {}
-              }).then(
-                () => {
-                  console.log("berhasill")
-                  this.fetchingChat()
-                }).catch((err) => console.log("error", err))
+              orderId = paramMap.get('idOrder');
+              this.db.object('/orders/' + uid + "/" + orderId).valueChanges().subscribe((data: any) => {
+                outletId = data.DETAIL.SHIPPING.OUTLETID;
+                outletName = data.DETAIL.SHIPPING.DESTINATION
+
+                this.db.database.ref().child('chat/').child(`${orderId}`).set({
+                  id_outlet: outletId,
+                  user: uid,
+                  outlet_name: outletName,
+                  chat: {
+                    "-AA": {
+                      "sender": outletId,
+                      "time": new Date().getHours() + ":" + new Date().getMinutes(),
+                      "message": "Thank you for using Rewash.id. Please wait our outlet to confirmation your order."
+                    }
+                  }
+                }).then(
+                  () => {
+                    this.fetchingChat()
+                    this.outletName = outletName
+                  }
+                )
+              })
             }
           }
         )
@@ -67,8 +81,9 @@ export class ChatPage implements OnInit, AfterViewChecked {
 
   fetchingChat() {
     this.db.object('/chat/' + this.orderId).valueChanges().subscribe((data: any) => {
+      this.loadedChat = [];
       this.uid = data.user;
-      this.outletName = data.outlet;
+      this.outletName = data.outlet_name;
       Object.keys(data.chat).forEach(chatKey => {
         this.loadedChat.push({
           message: data.chat[chatKey].message,
@@ -79,12 +94,12 @@ export class ChatPage implements OnInit, AfterViewChecked {
     });
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-    this.chatContainers.changes.subscribe((list: QueryList<ElementRef>) => {
-      this.scrollToBottom();
-    })
-  }
+  // ngAfterViewChecked() {
+  //   this.scrollToBottom();
+  //   this.chatContainers.changes.subscribe((list: QueryList<ElementRef>) => {
+  //     this.scrollToBottom();
+  //   })
+  // }
 
   scrollToBottom(): void {
     try {
