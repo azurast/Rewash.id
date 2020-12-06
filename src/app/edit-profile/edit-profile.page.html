@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Edit Profile
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid class="ion-profile-grid">
+    <ion-row class="ion-profile-header">
+      <ion-avatar class="ion-profile-avatar">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+    </ion-row>
+    <div class="ion-profile-information">
+      <ion-row>
+        <ion-label position="floating">Username</ion-label>
+        <ion-input [(ngModel)]="username"></ion-input>
+        <!-- <ion-text>
+          <h6>{{user.name}}</h6>
+        </ion-text> -->
+      </ion-row>
+      <ion-row>
+        <ion-label position="floating">Phone Number</ion-label>
+        <ion-input [(ngModel)]="phonenumber"></ion-input>
+        <!-- <p>{{ user.phoneNumber }}</p> -->
+      </ion-row>
+      <ion-row>
+        <ion-label position="floating">Address</ion-label>
+        <ion-input [(ngModel)]="address"></ion-input>
+        <!-- <p>{{ user.address[0]?.locationName || 'No Address Has Been Saved' }}</p> -->
+      </ion-row>
+      <ion-row>
+        <ion-button size="small" >Save</ion-button>
+      </ion-row>
+    </div>
+
+  </ion-grid>
+
+</ion-content>
