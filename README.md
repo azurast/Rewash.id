@@ -1,20 +1,4 @@
 # Rewash.id
-
-## IF 733-A - Cross Platform Mobile Programming
-Members :
-- Cyntia Fanny
-- Azura Sakan Taufik
-- Samuel Lorent
-- Titania
-
-## IF 742-C - Thematic System Project
-Members :
-- Cyntia Fanny
-- Azura Sakan Taufik
-- Samuel Lorent
-- Titania
-- Patricia Dinda Kinanti Susilo
-
 # About Rewash.id
 
 # Tech Stack
