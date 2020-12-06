@@ -25,4 +25,10 @@ export class Tab3Page implements OnInit {
       this.router.navigateByUrl('/authentication');
     })
   }
+
+  // editProfile() {
+  //   return this.editProfile().then(() => {
+  //     this.router.navigateByUrl('/edit-profile');
+  //   })
+  // }
 }
