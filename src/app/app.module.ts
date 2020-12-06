@@ -15,6 +15,7 @@ import {environment} from '../environments/environment.prod';
 import {OrderService} from './services/order/order.service';
 import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +27,8 @@ import {FormsModule} from "@angular/forms";
     IonicModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    HttpClientModule
   ],
   providers: [
     StatusBar,

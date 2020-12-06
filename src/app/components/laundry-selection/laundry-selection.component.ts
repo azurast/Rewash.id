@@ -35,6 +35,9 @@ export class LaundrySelectionComponent implements OnInit {
       bag: new FormControl(null),
       notes: new FormControl(null)
     });
+    this.laundryDetailsForm.valueChanges.subscribe((data: any) => {
+      this.updateLaundryDetails(data)
+    })
   }
 
   updateLaundryDetails(value: any) {

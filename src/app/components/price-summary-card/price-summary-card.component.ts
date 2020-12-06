@@ -1,12 +1,14 @@
-import { Component, HostBinding, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { OrderDetail } from '../../../constants/order-model';
-import { CurrencyPipe } from '@angular/common';
-import { registerLocaleData } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {OrderDetail} from '../../../constants/order-model';
+import {registerLocaleData} from '@angular/common';
 import localeId from '@angular/common/locales/id';
-import { OrderService } from '../../services/order/order.service';
-import { Subscription } from 'rxjs';
-import { AlertController } from '@ionic/angular';
+import {OrderService} from '../../services/order/order.service';
+import {Subscription} from 'rxjs';
+import {AlertController} from '@ionic/angular';
+import {OutletService} from "../../services/outlets/outlet.service";
+import {UserService} from "../../services/users/user.service";
+
 registerLocaleData(localeId, 'id');
 
 @Component({
@@ -27,10 +29,16 @@ export class PriceSummaryCardComponent implements OnInit {
   deliveryDate: string;
   deliveryDetailPage: boolean;
   isObjEmpty: any;
+  outletId: string;
+  outletName: string;
+  userLocation: string;
+
   constructor(
-      public orderService: OrderService,
-      public router: Router,
-      private alertController: AlertController
+    public orderService: OrderService,
+    public router: Router,
+    private alertController: AlertController,
+    private outletService: OutletService,
+    private userService: UserService
   ) {
   }
 
@@ -53,15 +61,19 @@ export class PriceSummaryCardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userLocation = this.orderService.getOrderDetail()[3];
+    this.outletId = this.orderService.getOrderDetail()[0];
+    console.log("dlv", this.userLocation)
+    this.outletName = this.outletService.getOutlet(this.outletId).name
     if (this.router.url === '/delivery-details') {
       this.deliveryDetailPage = true;
     } else {
       this.deliveryDetailPage = false;
     }
     this.orderDetailSub = this.orderService.getOrderData()
-        .subscribe((orderData) => {
-          this.orderDetail = orderData;
-        });
+      .subscribe((orderData) => {
+        this.orderDetail = orderData;
+      });
     // console.log('===orderDetail', this.orderDetail);
     this.allowedHourValues = '7,8,9,10,11,12,13,14,15,16,17,18';
     this.allowedMinuteValues = '0,15,30,45';
@@ -112,11 +124,14 @@ export class PriceSummaryCardComponent implements OnInit {
   updateOrderDetail() {
     this.orderDetail.DETAIL.SHIPPING.PICKUPTD = this.pickupDate;
     this.orderDetail.DETAIL.SHIPPING.DELIVERYTD = this.deliveryDate;
+    this.orderDetail.DETAIL.SHIPPING.ORIGIN = this.userLocation;
+    this.orderDetail.DETAIL.SHIPPING.OUTLETID = this.outletId;
+    this.orderDetail.DETAIL.SHIPPING.DESTINATION = this.outletName;
     this.orderService.setOrderData(this.orderDetail);
   }
 
   addToDb() {
-    this.orderService.addToDb(this.orderDetail);
+    this.orderService.addToDb(this.orderDetail, this.userService.getLoggedUser());
   }
 
   onNextClick() {

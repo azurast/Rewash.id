@@ -34,12 +34,11 @@ export class Tab1Page implements OnInit {
         ...data.payload.val()
       })))
     ).subscribe( data => {
-      console.log(data)
       this.ongoingOrders = data.filter( val => {
         return val.finished !== true;
       })
+      console.log(this.ongoingOrders)
     })
-    console.log(this.ongoingOrders)
   }
 
   toDate(isoString: string) {
@@ -71,4 +70,7 @@ export class Tab1Page implements OnInit {
     this.router.navigate(['order-detail'],  navigationExtras);
   }
 
+  ionViewWillEnter() {
+    this.user = this.userService.getLoggedInUser();
+  }
 }

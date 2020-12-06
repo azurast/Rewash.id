@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content class="ion-margin">
-    <ion-grid class="rating">
+    <ion-grid class="rating" (click)="isReviewStateChange()">
         <ion-icon *ngFor="let item of [].constructor(fullStar)"
                   class="star-icon"
                   name="star"
@@ -29,12 +29,10 @@
         <ion-icon class="arrow-icon"
                   name="chevron-down-outline"
                   *ngIf="!isReviewOpen"
-                  (click)="handleOpenReview()"
         ></ion-icon>
         <ion-icon class="arrow-icon"
                   name="chevron-up-outline"
                   *ngIf="isReviewOpen"
-                  (click)="handleCloseReview()"
         ></ion-icon>
     </ion-grid>
     <ion-grid class="review-container" *ngIf="isReviewOpen">

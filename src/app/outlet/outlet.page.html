@@ -19,11 +19,11 @@
                #placesRef="ngx-places"
                class="search-bar"
                (onAddressChange)="handleAddressChange($event)"
-               placeholder="  Enter Pickup & Delivery Location"/>
+               placeholder="{{inputLocation}}"/>
     </div>
     <ion-text class="outlet-near-text">Rewash outlet near you:</ion-text>
     <ion-list class="outlet-list-container">
-        <ion-item *ngFor="let singleOutlet of outlet" class="single-outlet" [routerLink]="['./', singleOutlet.id]">
+        <ion-item *ngFor="let singleOutlet of outlet" class="single-outlet" (click)="handleSelectOutlet(singleOutlet.id)" [routerLink]="['./', singleOutlet.id]">
             <ion-avatar>
                 <ion-img src="assets/icon/logolaundry.png"></ion-img>
             </ion-avatar>
