@@ -61,12 +61,7 @@ export class OutletDetailPage implements OnInit {
     });
   }
 
-  handleOpenReview() {
-    this.isReviewOpen = true;
+  isReviewStateChange() {
+    this.isReviewOpen = !this.isReviewOpen;
   }
-
-  handleCloseReview() {
-    this.isReviewOpen = false;
-  }
-
 }

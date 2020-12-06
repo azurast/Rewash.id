@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { OrderDetail } from '../../../constants/order-model';
-import { Router } from '@angular/router';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {OrderDetail} from '../../../constants/order-model';
+import {Router} from '@angular/router';
+import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,9 @@ export class OrderService {
   private dbPath = '/orders';
   ordersRef: AngularFireList<OrderDetail> = null;
   dbRef: any;
+  orderMade: any[] = []
+
   orderDataSource = new BehaviorSubject<OrderDetail>({
-    // TODO PAS NGE SET LOKASI PICKUP & DELIVERY JGN LUPA SET CURRENT USER ID
-    id: 'ONuPibfPl1aHoQRF0RDb2h7XOPS2',
     finished: false,
     NORMAL: [],
     SPECIAL: [],
@@ -63,11 +63,10 @@ export class OrderService {
         // GET FROM OUTLET ID
         OUTLETID: '',
         // GET FROM USER SERVICE (THIS CURRENT LOGGED IN USER)
-        USERID: '',
         NOTES: ''
       },
       // AUTO SET, AFTER CHECKOUT SET FIRST PROGRESS TO TRUE
-      PROGRESS:  [
+      PROGRESS: [
         {
           NAME: 'Order placed & confirmed',
           STATUS: true
@@ -101,12 +100,13 @@ export class OrderService {
           STATUS: false
         }
       ]
-  }});
+    }
+  });
   orderDataStreams = this.orderDataSource.asObservable();
 
   constructor(
-      private router: Router,
-      private db: AngularFireDatabase
+    private router: Router,
+    private db: AngularFireDatabase
   ) {
     this.ordersRef = db.list(this.dbPath);
   }
@@ -122,7 +122,7 @@ export class OrderService {
     return this.orderDataSource.asObservable();
   }
 
-  getOngoingOrder(user: any): Promise<any>{
+  getOngoingOrder(user: any): Promise<any> {
     /* Disini harusnya nerima user id dari tab1.page.ts
     * cuman ntah kenapa hasilnya tuh evaluated pas runtime jad undefined pas dikirim
     * kalau di console log 'Value Evaluated Just Now' messagenya
@@ -134,14 +134,25 @@ export class OrderService {
     * */
     // console.log('===user', user);
     return this.db.database.ref('orders/ONuPibfPl1aHoQRF0RDb2h7XOPS2')
-        .once('value').then((dataSnapshot) => {
-          return dataSnapshot.val();
-        });
+      .once('value').then((dataSnapshot) => {
+        return dataSnapshot.val();
+      });
   }
 
-  addToDb(orderDetail) {
-    const { id: userId } = orderDetail;
+  addToDb(orderDetail: any, userId: string) {
     this.dbRef = this.db.database.ref().child('orders');
-    this.dbRef.child(`${userId}`).push({...orderDetail});
+    this.dbRef.child(`${userId}`).push({...orderDetail})
+  }
+
+  storeOrderDetail (value: string | number) {
+    this.orderMade.push(value)
+  }
+
+  clearOrderDetail () {
+    this.orderMade = [];
+  }
+
+  getOrderDetail() {
+    return this.orderMade;
   }
 }

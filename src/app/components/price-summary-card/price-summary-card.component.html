@@ -9,8 +9,8 @@
             <ion-icon name="cube-outline" size="large"></ion-icon>
           </ion-col>
           <ion-col>
-            <ion-text color="warning" style="font-weight: bold">Pickup From</ion-text>
-            <ion-text><p class="ion-no-margin" style="font-size: 14px">Jalan Gunung Mau Meletus</p></ion-text>
+            <ion-text color="warning" style="font-weight: bold">Pickup & Delivery Address</ion-text>
+            <ion-text><p class="ion-no-margin" style="font-size: 14px">{{userLocation}}</p></ion-text>
             <ion-text color="medium"><p class="ion-no-margin" style="font-size: 12px">{{orderDetail.DETAIL.SHIPPING?.NOTES}}</p></ion-text>
 <!--            <ion-text><p class="ion-no-margin">{{orderDetail.DETAIL.SHIPPING?.ORIGIN}}</p></ion-text>-->
             <ion-button size="small" color="secondary" (click)="openModal()">
@@ -24,8 +24,8 @@
             <ion-icon src="/assets/icon/storefront-outline.svg" size="large"></ion-icon>
           </ion-col>
           <ion-col>
-            <ion-text color="primary" style="font-weight: bold">Deliver To</ion-text>
-            <ion-text><p class="ion-no-margin" style="font-size: 14px">{{orderDetail.DETAIL.SHIPPING?.DESTINATION}}</p></ion-text>
+            <ion-text color="primary" style="font-weight: bold">Outlet</ion-text>
+            <ion-text><p class="ion-no-margin" style="font-size: 14px">{{outletName}}</p></ion-text>
           </ion-col>
         </ion-row>
       </ion-grid>

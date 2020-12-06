@@ -1,6 +1,6 @@
 <ion-grid>
   <!--Laundry Smell-->
-  <form [formGroup]="laundryDetailsForm" (ngSubmit)="updateLaundryDetails(laundryDetailsForm.value)">
+  <form [formGroup]="laundryDetailsForm">
     <ion-text>
       <h5 class="text-sub-heading">Choose Scent</h5>
     </ion-text>
@@ -24,8 +24,5 @@
     <ion-item>
       <ion-textarea placeholder="Anything else we should know?" formControlName="notes"></ion-textarea>
     </ion-item>
-    <ion-button expand="full" color="danger" type="submit">
-      NEXT (TEST SERVICE)
-    </ion-button>
   </form>
 </ion-grid>

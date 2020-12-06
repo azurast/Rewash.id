@@ -4,6 +4,8 @@ import {Outlet} from '../services/outlets/outlet.model';
 import {OutletService} from '../services/outlets/outlet.service';
 import {GooglePlaceDirective} from "ngx-google-places-autocomplete";
 import {Address} from "ngx-google-places-autocomplete/objects/address";
+import {OrderService} from "../services/order/order.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-outlet',
@@ -15,6 +17,7 @@ export class OutletPage implements OnInit {
   outlet: Outlet[] = [];
   inputLatitude = 0;
   inputLongitude = 0;
+  inputLocation: string = "";
   options = {
     componentRestriction: {
       country: ['ID']
@@ -23,13 +26,17 @@ export class OutletPage implements OnInit {
 
   constructor(
     private outletService: OutletService,
-    private db: AngularFireDatabase
+    private orderService: OrderService,
+    private db: AngularFireDatabase,
+    private http: HttpClient
   ) {
   }
 
   public handleAddressChange(address: Address) {
     this.inputLatitude = address.geometry.location.lat();
     this.inputLongitude = address.geometry.location.lng();
+    this.inputLocation = address.formatted_address;
+    console.log(address)
 
     this.fetchOutletFromDatabase();
     setTimeout(() => this.outlet.sort((a, b) => (a.distance > b.distance) ? 1 : -1), 2000);
@@ -83,11 +90,27 @@ export class OutletPage implements OnInit {
       navigator.geolocation.getCurrentPosition((position: Position) => {
         this.inputLatitude = position.coords.latitude
         this.inputLongitude = position.coords.longitude
+
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + this.inputLatitude + "," + this.inputLongitude +"&key=AIzaSyDehuZ6WNyD6N-U9FT3R7ckDTQdQgK4JCE"
+        this.http.get(url).subscribe(
+          (data: any) => {
+            this.inputLocation = data.results[0].formatted_address;
+          })
       })
     }
-
     this.fetchOutletFromDatabase();
     setTimeout(() => this.outlet.sort((a, b) => (a.distance > b.distance) ? 1 : -1), 2000);
     this.outletService.storeOutlet(this.outlet);
+  }
+
+  ionViewWillEnter() {
+    this.orderService.clearOrderDetail();
+  }
+
+  handleSelectOutlet(id: string) {
+    this.orderService.storeOrderDetail(id)
+    this.orderService.storeOrderDetail(this.inputLatitude)
+    this.orderService.storeOrderDetail(this.inputLongitude)
+    this.orderService.storeOrderDetail(this.inputLocation)
   }
 }
