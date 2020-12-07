@@ -3,7 +3,7 @@ import {UserService} from "../services/users/user.service";
 import {Order} from "../services/order/order.model";
 import {AngularFireDatabase} from "@angular/fire/database";
 import {OrderService} from "../services/order/order.service";
-import {Router} from "@angular/router";
+import {NavigationExtras, Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/auth";
 import {map} from "rxjs/operators";
 import { User } from '../services/users/user';
@@ -18,7 +18,6 @@ export class Tab1Page implements OnInit {
   user: User;
   uid: string;
   ongoingOrders: any = [];
-
   constructor(
     private userService: UserService,
     private orderService: OrderService,
@@ -35,12 +34,16 @@ export class Tab1Page implements OnInit {
         ...data.payload.val()
       })))
     ).subscribe( data => {
-      console.log(data)
       this.ongoingOrders = data.filter( val => {
-        return val.orderStatus !== "finished";
+        return val.finished !== true;
       })
+      console.log(this.ongoingOrders)
     })
-    console.log(this.ongoingOrders)
+  }
+
+  toDate(isoString: string) {
+    const date  = new Date(isoString);
+    return date.toDateString() + ' ' + date.toTimeString().substring(0,5);
   }
 
   ngOnInit() {
@@ -57,8 +60,17 @@ export class Tab1Page implements OnInit {
     });
   }
 
-  ionViewWillEnter() {
-    //this.ongoingOrders = this.orderService.getAllOrder();
+  goToOrderDetail(orderObject: any) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        data: JSON.stringify(orderObject)
+      },
+      skipLocationChange: true
+    };
+    this.router.navigate(['order-detail'],  navigationExtras);
   }
 
+  ionViewWillEnter() {
+    this.user = this.userService.getLoggedInUser();
+  }
 }

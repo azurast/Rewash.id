@@ -28,6 +28,12 @@ ion-toolbar.bck {
   font-size: 20px;
 }
 
+.arrow-icon {
+  margin-left: 5px;
+  color: #000000;
+  font-size: 20px;
+}
+
 .rating-text {
   margin: auto 20px;
   font-size: 12px;
@@ -88,4 +94,24 @@ ion-col{
   padding: 0 10px;
   width: min-content;
   justify-content: center;
+}
+
+.review-container {
+  background-color: #f9f9f9;
+}
+
+.single-review {
+  padding: 10px 5px !important;
+  margin: 0 15px !important;
+}
+
+ion-card-content {
+  display: flex;
+  flex-direction: row;
+}
+
+ion-avatar {
+  width: 30px;
+  height: 30px;
+  margin: 0 10px;
 }

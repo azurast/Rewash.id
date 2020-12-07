@@ -30,7 +30,6 @@ export class AuthenticationPage implements OnInit {
       // console.log('===user', user);
       this.router.navigateByUrl('/pages');
       if (user) {
-        console.log('authhh', user.uid);
         this.userService.storeLoggedUser(user.uid);
         this.router.navigateByUrl('tabs/tab1');
         this.currentUser = user;

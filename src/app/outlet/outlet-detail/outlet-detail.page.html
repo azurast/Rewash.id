@@ -3,16 +3,16 @@
     <ion-grid class="laundry-image">
         <ion-toolbar class="bck">
             <ion-buttons slot="start">
-                    <ion-back-button class="button-back"
-                                     defaultHref="/outlet"
-                    ></ion-back-button>
+                <ion-back-button class="button-back"
+                                 defaultHref="/outlet"
+                ></ion-back-button>
             </ion-buttons>
         </ion-toolbar>
     </ion-grid>
 </ion-header>
 
 <ion-content class="ion-margin">
-    <ion-grid class="rating">
+    <ion-grid class="rating" (click)="isReviewStateChange()">
         <ion-icon *ngFor="let item of [].constructor(fullStar)"
                   class="star-icon"
                   name="star"
@@ -26,6 +26,29 @@
                   name="star-outline"
         ></ion-icon>
         <ion-text class="rating-text">{{rating.toFixed(1)}}</ion-text>
+        <ion-icon class="arrow-icon"
+                  name="chevron-down-outline"
+                  *ngIf="!isReviewOpen"
+        ></ion-icon>
+        <ion-icon class="arrow-icon"
+                  name="chevron-up-outline"
+                  *ngIf="isReviewOpen"
+        ></ion-icon>
+    </ion-grid>
+    <ion-grid class="review-container" *ngIf="isReviewOpen">
+        <ion-text class="outlet-name ion-padding" color="success">Reviews</ion-text>
+            <ion-card class="single-review" *ngFor="let review of loadedOutlet.feedbacks | keyvalue">
+                <ion-card-content>
+                    <ion-avatar slot="start">
+                        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="user">
+                    </ion-avatar>
+                    <ion-label>{{review.value}}</ion-label>
+                </ion-card-content>
+            </ion-card>
+        <br>
+        <ion-text *ngIf="loadedOutlet.feedbacks.length <= 0" class="ion-padding">
+            Be the first to review!
+        </ion-text>
     </ion-grid>
     <ion-grid class="outlet-desc">
         <ion-text class="outlet-name">{{loadedOutlet.name}}</ion-text>
@@ -42,18 +65,6 @@
             </ion-col>
         </ion-row>
     </ion-list>
-    <ion-button class="ion-color-primary order-button" [routerLink]="['/input-items']" expand="block">CREATE AN ORDER</ion-button>
-    <ion-text class="outlet-name ion-padding" color="success">Reviews</ion-text>
-    <ion-list  *ngFor="let review of loadedOutlet.feedbacks | keyvalue">
-        <ion-item>
-            <ion-avatar slot="start">
-                <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
-            </ion-avatar>
-            <ion-label>{{review.value}}</ion-label>
-        </ion-item>
-    </ion-list>
-    <br>
-    <ion-text *ngIf="loadedOutlet.feedbacks.length <= 0" class="ion-padding">
-        Be the first to review!
-    </ion-text>
+    <ion-button class="ion-color-primary order-button" [routerLink]="['/input-items']" expand="block">CREATE AN ORDER
+    </ion-button>
 </ion-content>

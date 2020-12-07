@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button style="color: #ffffff" defaultHref='/tabs/tab2'></ion-back-button>
     </ion-buttons>
-    <ion-title>{{orderDetail.DETAIL.SHIPPING.DESTINATION}}</ion-title>
+    <ion-title class="ion-title">{{orderDetail.DETAIL.SHIPPING.DESTINATION}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
     <ion-row>
-      <h4 class="text-heading">ORDER ID : {{orderDetail.DETAIL.ORDERID}}</h4>
+      <h4 class="text-heading">ORDER ID : {{orderDetail.id}}</h4>
     </ion-row>
     <ion-row>
         <h5 class="text-sub-heading">Laundry Details</h5>
@@ -95,6 +95,6 @@
         <ion-label>{{item.NAME}}</ion-label>
       </ion-item>
     </ion-list>
-    <ion-button expand="full" (click)="onComplete()">COMPLETE ORDER</ion-button>
+    <ion-button *ngIf="orderDetail.finished !== true" expand="full" (click)="onComplete()">COMPLETE ORDER</ion-button>
   </ion-grid>
 </ion-content>
