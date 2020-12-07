@@ -10,7 +10,7 @@
   <ion-grid class="ion-profile-grid">
     <ion-row class="ion-profile-header">
       <ion-avatar class="ion-profile-avatar">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+        <img [src]=user.imageUrl>
       </ion-avatar>
     </ion-row>
     <div class="ion-profile-information">
@@ -29,10 +29,10 @@
         <p>{{ user.address[0]?.locationName || 'No Address Has Been Saved' }}</p>
       </ion-row>
       <ion-row>
-        <ion-col size="3" class="ion-profile-button">
-          <ion-button size="small">Edit</ion-button>
+        <ion-col size="2.5" class="ion-profile-button">
+          <ion-button size="small" [routerLink]="['/edit-profile']">Edit</ion-button>
         </ion-col>
-        <ion-col size="3" class="ion-profile-button">
+        <ion-col size="2.5" class="ion-profile-button">
           <ion-button (click)="signOut()" size="small" color="danger">Logout</ion-button>
         </ion-col>
       </ion-row>

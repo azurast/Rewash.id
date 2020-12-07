@@ -17,6 +17,39 @@ export class UserService {
     this.usersRef = db.list(this.dbPath);
   }
 
+  avatar = [
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/1.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/1.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/2.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/2.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/3.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/3.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/4.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/4.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/5.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/5.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/6.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/6.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/7.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/7.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/8.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/8.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/9.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/9.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/10.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/10.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/11.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/11.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/12.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/12.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/13.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/13.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/14.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/14.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/15.png",
+    "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/15.png",
+  ]
+
   /* After user sign up, create new reference to that user in DB */
   create(user: any, fullName: string, phoneNumber: string): any {
     const { uid , providerData } = user;
@@ -54,5 +87,9 @@ export class UserService {
 
   getLoggedUser() {
     return this.currentUser;
+  }
+
+  fetchAvatar() {
+    return this.avatar;
   }
 }

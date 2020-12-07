@@ -1,11 +1,14 @@
-import {Component, HostBinding, OnChanges, OnDestroy, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
-import { OrderDetail } from '../../../constants/order-model';
-import { CurrencyPipe } from '@angular/common';
-import { registerLocaleData } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {OrderDetail} from '../../../constants/order-model';
+import {registerLocaleData} from '@angular/common';
 import localeId from '@angular/common/locales/id';
-import { OrderService } from '../../services/order/order.service';
-import { Subscription } from 'rxjs';
+import {OrderService} from '../../services/order/order.service';
+import {Subscription} from 'rxjs';
+import {AlertController} from '@ionic/angular';
+import {OutletService} from "../../services/outlets/outlet.service";
+import {UserService} from "../../services/users/user.service";
+
 registerLocaleData(localeId, 'id');
 
 @Component({
@@ -23,17 +26,20 @@ export class PriceSummaryCardComponent implements OnInit {
   allowedHourValues: string;
   allowedMinuteValues: string;
   pickupDate: string;
+  deliveryDate: string;
   deliveryDetailPage: boolean;
   isObjEmpty: any;
+  outletId: string;
+  outletName: string;
+  userLocation: string;
 
   constructor(
-      public orderService: OrderService,
-      public router: Router
+    public orderService: OrderService,
+    public router: Router,
+    private alertController: AlertController,
+    private outletService: OutletService,
+    private userService: UserService
   ) {
-    // this.orderService.orderDataStreams.subscribe((orderData) => {
-    //   console.log('===orderData', orderData);
-    //   this.orderDetail = orderData;
-    // });
   }
 
   addDays(date, days) {
@@ -47,18 +53,28 @@ export class PriceSummaryCardComponent implements OnInit {
     // Calculate min & max delivery date
     this.minDeliveryDate = this.addDays(new Date(this.pickupDate), 1).toISOString().slice(0, 10);
     this.maxDeliveryDate = this.addDays(new Date(this.pickupDate), 7).toISOString().slice(0, 10);
+    this.deliveryDate = this.minDeliveryDate;
+  }
+
+  changeDeliveryDate(newDeliveryDate: string) {
+    this.deliveryDate = newDeliveryDate;
   }
 
   ngOnInit() {
+    this.userLocation = this.orderService.getOrderDetail()[3];
+    this.outletId = this.orderService.getOrderDetail()[0];
+    console.log("dlv", this.userLocation)
+    this.outletName = this.outletService.getOutlet(this.outletId).name
     if (this.router.url === '/delivery-details') {
       this.deliveryDetailPage = true;
     } else {
       this.deliveryDetailPage = false;
     }
     this.orderDetailSub = this.orderService.getOrderData()
-        .subscribe((orderData) => {
-          this.orderDetail = orderData;
-        });
+      .subscribe((orderData) => {
+        this.orderDetail = orderData;
+      });
+    // console.log('===orderDetail', this.orderDetail);
     this.allowedHourValues = '7,8,9,10,11,12,13,14,15,16,17,18';
     this.allowedMinuteValues = '0,15,30,45';
     // Get today's date as minimum pickup date
@@ -67,8 +83,58 @@ export class PriceSummaryCardComponent implements OnInit {
     this.changePickupDate(this.pickupDate);
   }
 
+  async presentAlertPrompt() {
+    const alert = await this.alertController.create({
+      animated: true,
+      backdropDismiss: true,
+      header: 'Note to driver',
+      inputs: [
+        {
+          name: 'shippingnote',
+          id: 'textarea',
+          type: 'textarea',
+          placeholder: 'Tell us about your location!'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            alert.dismiss();
+          }
+        },
+        {
+          text: 'Save',
+          role: 'submit',
+          handler: (data) => {
+            this.orderDetail.DETAIL.SHIPPING.NOTES = data.shippingnote;
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  openModal() {
+    this.presentAlertPrompt();
+  }
+
+  updateOrderDetail() {
+    this.orderDetail.DETAIL.SHIPPING.PICKUPTD = this.pickupDate;
+    this.orderDetail.DETAIL.SHIPPING.DELIVERYTD = this.deliveryDate;
+    this.orderDetail.DETAIL.SHIPPING.ORIGIN = this.userLocation;
+    this.orderDetail.DETAIL.SHIPPING.OUTLETID = this.outletId;
+    this.orderDetail.DETAIL.SHIPPING.DESTINATION = this.outletName;
+    this.orderService.setOrderData(this.orderDetail);
+  }
+
+  addToDb() {
+    this.orderService.addToDb(this.orderDetail, this.userService.getLoggedUser());
+  }
+
   onNextClick() {
-    // // console.log('this.router.url', this.router.url);
     switch (this.router.url) {
       case '/input-items': {
         // alert('=== mau ke laundry details');
@@ -81,10 +147,13 @@ export class PriceSummaryCardComponent implements OnInit {
         break;
       }
       case '/delivery-details': {
-        alert('=== mau ke splashscreen loading');
+        this.updateOrderDetail();
+        this.addToDb();
+        this.router.navigate(['/tab/tabs1'])
         break;
       }
     }
   }
+
 
 }

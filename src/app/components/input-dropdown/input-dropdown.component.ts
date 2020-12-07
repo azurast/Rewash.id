@@ -1,15 +1,16 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import { ALL_ITEMS } from '../../../constants/items-pricing';
-import { Item } from '../../../constants/item-model';
-import { CurrencyPipe } from '@angular/common';
-import { registerLocaleData } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {ALL_ITEMS} from '../../../constants/items-pricing';
+import {Item} from '../../../constants/item-model';
+import {registerLocaleData} from '@angular/common';
 import localeId from '@angular/common/locales/id';
-import { element } from 'protractor';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AlertController, ToastController} from '@ionic/angular';
+import {OrderDetail} from '../../../constants/order-model';
+import {OrderService} from '../../services/order/order.service';
+import {OutletService} from "../../services/outlets/outlet.service";
+
 registerLocaleData(localeId, 'id');
-import { ToastController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
-import { OrderService } from '../../services/order/order.service';
 
 @Component({
   selector: 'app-input-dropdown',
@@ -27,15 +28,26 @@ export class InputDropdownComponent implements OnInit {
   addOtherItemForm: FormGroup;
   count: number;
   hasAlertBeenShown: boolean;
+  orderDetail: OrderDetail;
+  orderDetailSub: Subscription;
+  outletID: string;
+  distance: number;
 
   constructor(
-      public toastController: ToastController,
-      public alertController: AlertController,
-      public orderService: OrderService
+    public toastController: ToastController,
+    public alertController: AlertController,
+    public orderService: OrderService,
+    public outletService: OutletService,
   ) {
   }
 
   ngOnInit() {
+    this.orderDetailSub = this.orderService.getOrderData()
+      .subscribe((orderData) => {
+        this.orderDetail = orderData;
+      });
+    this.outletID = this.orderService.getOrderDetail()[0];
+    this.distance = this.outletService.getOutlet(this.outletID).distance;
     this.count = 0;
     this.hasAlertBeenShown = false;
     this.normalItems = ALL_ITEMS.NORMAL_ITEMS;
@@ -58,6 +70,7 @@ export class InputDropdownComponent implements OnInit {
         --obj.QTY;
       }
     });
+    this.calculateCart();
   }
 
   onAddNormalItem(key: any) {
@@ -66,6 +79,7 @@ export class InputDropdownComponent implements OnInit {
         ++obj.QTY;
       }
     });
+    this.calculateCart();
   }
 
   onRemoveSpecialItem(key: any) {
@@ -74,6 +88,7 @@ export class InputDropdownComponent implements OnInit {
         --obj.QTY;
       }
     });
+    this.calculateCart();
   }
 
   onAddSpecialItem(key: any) {
@@ -82,6 +97,7 @@ export class InputDropdownComponent implements OnInit {
         ++obj.QTY;
       }
     });
+    this.calculateCart();
   }
 
   onRemoveOtherItem(key: any) {
@@ -90,6 +106,7 @@ export class InputDropdownComponent implements OnInit {
         --obj.QTY;
       }
     });
+    this.calculateCart();
   }
 
   // ITEMS ADDED TO CART
@@ -121,36 +138,18 @@ export class InputDropdownComponent implements OnInit {
     normalItemsPriceTotal = 10000 * (normalItemsEstWeightTotal / 1000);
     totalOrderPrice = specialItemsPriceTotal + normalItemsPriceTotal + otherItemsPriceTotal;
 
-    const cart = {
-      SPECIAL : [...specialItemsRes],
-      NORMAL: [...normalItemsRes],
-      OTHERS: [...otherItemsRes],
-      DETAIL: {
-        PRICE : [
-          {
-            NAME: 'Special Items Price',
-            PRICE: specialItemsPriceTotal,
-          },
-          {
-            NAME: 'Normal Items Price',
-            PRICE: normalItemsPriceTotal,
-          },
-          {
-            NAME: 'Other Items Price',
-            PRICE: otherItemsPriceTotal,
-          },
-          {
-            NAME: 'Total Order Price',
-            PRICE: totalOrderPrice,
-          }
-        ],
-        WEIGHT: {
-          normalItemsEstWeightTotal: Math.ceil(normalItemsEstWeightTotal / 1000),
-          specialItemsEstWeightTotal: Math.ceil(specialItemsEstWeightTotal / 1000)
-        }
-      }
-    };
-    this.orderService.setOrderData(cart);
+    this.orderDetail.NORMAL = normalItemsRes;
+    this.orderDetail.SPECIAL = specialItemsRes;
+    this.orderDetail.OTHERS = otherItemsRes;
+    this.orderDetail.DETAIL.PRICE[0].PRICE = specialItemsPriceTotal;
+    this.orderDetail.DETAIL.PRICE[1].PRICE = normalItemsPriceTotal;
+    this.orderDetail.DETAIL.PRICE[2].PRICE = otherItemsPriceTotal;
+    this.orderDetail.DETAIL.PRICE[3].PRICE = Math.ceil(this.distance) * 5000;
+    this.orderDetail.DETAIL.PRICE[4].PRICE = totalOrderPrice;
+    this.orderDetail.DETAIL.WEIGHT.normalItemsEstWeightTotal = Math.ceil(normalItemsEstWeightTotal / 1000);
+    this.orderDetail.DETAIL.WEIGHT.specialItemsEstWeightTotal = Math.ceil(specialItemsEstWeightTotal / 1000);
+
+    this.orderService.setOrderData(this.orderDetail);
   }
 
   onAddOtherItem(key: any) {
@@ -159,6 +158,7 @@ export class InputDropdownComponent implements OnInit {
         ++obj.QTY;
       }
     });
+    this.calculateCart();
   }
 
   // DELETE ITEM ALERT
@@ -180,6 +180,7 @@ export class InputDropdownComponent implements OnInit {
         }
       ]
     });
+    this.calculateCart();
     await alert.present();
   }
 
@@ -209,14 +210,14 @@ export class InputDropdownComponent implements OnInit {
   */
   hashCode = (s) => s.split('').reduce((a, b) => {
     // tslint:disable-next-line:no-bitwise
-    a = (( a << 5 ) - a ) + b.charCodeAt(0);
+    a = ((a << 5) - a) + b.charCodeAt(0);
     // tslint:disable-next-line:no-bitwise
     return a & a + Math.random();
   }, 0)
 
   // OTHER ITEM
   addOtherItem(newItem) {
-    const { other_item_name, other_item_qty } = newItem;
+    const {other_item_name, other_item_qty} = newItem;
     this.count++;
     if (other_item_name !== null || other_item_qty !== null) {
       this.otherItems.push({
@@ -225,6 +226,7 @@ export class InputDropdownComponent implements OnInit {
         QTY: other_item_qty
       });
       this.addOtherItemForm.reset();
+      this.calculateCart();
       this.presentToast('Item has been added!', 'success');
     } else {
       this.presentToast('Input can\'t be empty!', 'danger');

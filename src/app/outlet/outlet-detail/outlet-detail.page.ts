@@ -20,6 +20,7 @@ export class OutletDetailPage implements OnInit {
   day: string[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   UIday: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   reviews: any;
+  isReviewOpen: boolean = false;
 
   constructor(
       private activatedRoute: ActivatedRoute,
@@ -45,9 +46,7 @@ export class OutletDetailPage implements OnInit {
       }
       const outletId = paramMap.get('outletId');
       this.loadedOutlet = this.outletService.getOutlet(outletId);
-      console.log('===loadedOutlet', this.loadedOutlet);
       this.reviews = this.loadedOutlet.feedbacks;
-      // console.log('===this.reviews', this.reviews);
       this.rating = this.loadedOutlet.points / this.loadedOutlet.transactions;
       this.fullStar = Math.floor(this.rating);
       if (this.rating % 1 !== 0) {
@@ -60,4 +59,7 @@ export class OutletDetailPage implements OnInit {
     });
   }
 
+  isReviewStateChange() {
+    this.isReviewOpen = !this.isReviewOpen;
+  }
 }

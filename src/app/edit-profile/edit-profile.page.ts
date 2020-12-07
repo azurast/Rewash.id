@@ -1,0 +1,109 @@
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/users/user.service';
+import { User} from '../services/users/user';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import {NgForm} from "@angular/forms";
+import {AngularFireDatabase} from "@angular/fire/database";
+
+@Component({
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.page.html',
+  styleUrls: ['./edit-profile.page.scss'],
+})
+export class EditProfilePage implements OnInit {
+  require: any
+  user: User;
+  profilePic: string;
+  isEditingPic: boolean = true;
+  avatar: string[] = [];
+  showAvatar: string[] = [];
+  pagePosition: number = 1;
+  constructor(
+    private db: AngularFireDatabase,
+    private userService: UserService
+  ) { }
+
+  ngOnInit() {
+    this.user = this.userService.getLoggedInUser();
+    this.profilePic = this.user.imageUrl;
+    this.avatar = this.userService.fetchAvatar();
+    this.fetchShowAvatar(1, 2, 3, 4)
+  }
+
+  ionViewWillEnter() {
+    this.pagePosition = 1;
+    this.user = this.userService.getLoggedInUser();
+    this.profilePic = this.user.imageUrl;
+    this.avatar = this.userService.fetchAvatar();
+    this.fetchShowAvatar(1, 2, 3, 4)
+  }
+
+  fetchShowAvatar(a, b, c, d) {
+    this.showAvatar = []
+    this.showAvatar.push(
+      this.avatar[a],
+      this.avatar[b],
+      this.avatar[c],
+      this.avatar[d]
+    )
+  }
+
+  handleStartEditing() {
+    this.isEditingPic = true;
+  }
+
+  handleChooseAvatar(ava: string) {
+    this.profilePic = ava;
+    this.isEditingPic = false;
+  }
+
+  handleCancelEditing() {
+    this.isEditingPic = false;
+  }
+
+  handleChangePage(number: number) {
+    this.pagePosition = this.pagePosition + number
+
+    switch (this.pagePosition) {
+      case 1:
+        this.fetchShowAvatar(1,2,3,4)
+        break
+      case 2:
+        this.fetchShowAvatar(5,6,7,8)
+        break
+      case 3:
+        this.fetchShowAvatar(8,10,11,12)
+        break
+      case 4:
+        this.fetchShowAvatar(13,14,15,16)
+        break
+      case 5:
+        this.fetchShowAvatar(17,18,19,20)
+        break
+      case 6:
+        this.fetchShowAvatar(21,22,23,24)
+        break
+      case 7:
+        this.fetchShowAvatar(25,26,27,28)
+        break
+      default:
+        this.fetchShowAvatar(1,2,3,4)
+    }
+  }
+
+  saveProfile(form: NgForm) {
+    console.log(form)
+    let name = form.value.name
+    let phone = form.value.phone
+    let userID = this.user.id
+
+    // console.log(name)
+
+    this.db.list('user').update(userID,{
+      fullName: name,
+      phoneNumber: phone,
+      imageUrl: this.profilePic
+    });
+  }
+}

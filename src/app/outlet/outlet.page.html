@@ -8,18 +8,22 @@
 </ion-header>
 
 <ion-content>
-    <ion-input class="search-bar"
-               placeholder="Cluster Allogio"
-    >
+    <div class="search-container">
         <ion-icon name="location"
                   slot="start"
                   size="small"
                   class="icon-search ion-color-secondary"
         ></ion-icon>
-    </ion-input>
+        <input ngx-google-places-autocomplete
+               [options]='options'
+               #placesRef="ngx-places"
+               class="search-bar"
+               (onAddressChange)="handleAddressChange($event)"
+               placeholder="{{inputLocation}}"/>
+    </div>
     <ion-text class="outlet-near-text">Rewash outlet near you:</ion-text>
     <ion-list class="outlet-list-container">
-        <ion-item *ngFor="let singleOutlet of outlet" class="single-outlet" [routerLink]="['./', singleOutlet.id]">
+        <ion-item *ngFor="let singleOutlet of outlet" class="single-outlet" (click)="handleSelectOutlet(singleOutlet.id)" [routerLink]="['./', singleOutlet.id]">
             <ion-avatar>
                 <ion-img src="assets/icon/logolaundry.png"></ion-img>
             </ion-avatar>

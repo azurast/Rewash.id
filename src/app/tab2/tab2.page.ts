@@ -4,6 +4,10 @@ import {User} from '../services/users/user';
 import {OrderService} from '../services/order/order.service';
 import { NavController } from '@ionic/angular';
 import {Router, NavigationExtras } from '@angular/router';
+import {AngularFireDatabase} from "@angular/fire/database";
+import {AngularFireAuth} from "@angular/fire/auth";
+import {Order} from "../services/order/order.model";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-tab2',
@@ -11,14 +15,16 @@ import {Router, NavigationExtras } from '@angular/router';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
-
   user: User;
-  allOrders: any;
+  uid: string;
+  allOrders: any = [];
 
   constructor(
       private userService: UserService,
       private orderService: OrderService,
       private navController: NavController,
+      private db: AngularFireDatabase,
+      public auth: AngularFireAuth,
       private router: Router
   ) {}
 
@@ -27,16 +33,31 @@ export class Tab2Page implements OnInit {
     return date.toDateString() + ' ' + date.toTimeString().substring(0,5);
   }
 
+  fetchAllOrder() {
+    this.db.list<Order>('/orders/' + this.uid).snapshotChanges().pipe(
+      map(changes => changes.map(data => ({
+        id: data.payload.key,
+        ...data.payload.val()
+      })))
+    ).subscribe( data => {
+      console.log(data)
+      this.allOrders = data;
+    })
+    console.log(this.allOrders)
+  }
+
   ngOnInit() {
     this.user = this.userService.getLoggedInUser();
-    this.orderService.getOngoingOrder(this.user)
-        .then((res) => {
-          this.allOrders = res;
-          // console.log('===this.allOrders', this.allOrders);
-          // User id baru kebaca disini, berarti manggil order service harus nunggu user
-          // service selesai jalan dulu & return hasil yg bener
-          // console.log('===this.user', this.user.id);
-        });
+    this.auth.onAuthStateChanged((user) => {
+      if (!user) {
+        this.router.navigateByUrl('/authentication')
+      }
+      else {
+        this.uid = user.uid;
+        this.fetchAllOrder();
+        this.userService.storeLoggedUser(user.uid);
+      }
+    });
   }
 
   goToOrderDetail(orderObject: any) {
