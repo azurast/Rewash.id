@@ -1,0 +1,51 @@
+.ion-profile-avatar {
+  width: 150px;
+  height: 150px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.ion-title {
+  color: white
+}
+
+.edit-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 20px;
+  padding: 5px 9px;
+  background-color: #dbdbdb;
+  position: absolute;
+  top: 7.7rem;
+  left: 6.8rem;
+}
+
+.icon {
+  color: #747474;
+  margin: auto;
+}
+
+.ion-profile-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  margin: 0 25%
+}
+
+.icon-cancel {
+  align-self: end;
+}
+
+.img-preview {
+  width: 41%;
+  max-width: 80px !important;
+}
+
+.scroll-container {
+  height: 100px;
+}
+
+ion-card {
+  max-height: 250px;
+}

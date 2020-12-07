@@ -25,13 +25,13 @@
 
       <form [formGroup]="loginForm" (ngSubmit)="loginUser(loginForm.value)" >
         <ion-row>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">E-mail</ion-label>
             <ion-input type="email" formControlName="login_email"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">Password</ion-label>
             <ion-input type="password" formControlName="login_password"></ion-input>
           </ion-item>
@@ -83,25 +83,25 @@
       </ion-row>
       <form [formGroup]="signUpForm" (ngSubmit)="signUpUser(signUpForm.value)" >
         <ion-row>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">Full Name</ion-label>
             <ion-input type="text" formControlName="signup_full_name"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">E-mail</ion-label>
             <ion-input type="email" formControlName="signup_email"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">Password</ion-label>
             <ion-input type="password" formControlName="signup_password"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">Phone Number</ion-label>
             <ion-input type="text" formControlName="signup_phone_number"></ion-input>
           </ion-item>
