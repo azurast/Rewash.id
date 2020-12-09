@@ -32,7 +32,6 @@ export class PriceSummaryCardComponent implements OnInit {
   outletId: string;
   outletName: string;
   userLocation: string;
-  // isOrderEmpty: boolean = true;
 
   constructor(
     public orderService: OrderService,
@@ -64,7 +63,6 @@ export class PriceSummaryCardComponent implements OnInit {
   ngOnInit() {
     this.userLocation = this.orderService.getOrderDetail()[3];
     this.outletId = this.orderService.getOrderDetail()[0];
-    console.log("dlv", this.userLocation)
     this.outletName = this.outletService.getOutlet(this.outletId).name
     if (this.router.url === '/delivery-details') {
       this.deliveryDetailPage = true;
@@ -75,19 +73,12 @@ export class PriceSummaryCardComponent implements OnInit {
       .subscribe((orderData) => {
         this.orderDetail = orderData;
       });
-    // console.log('===orderDetail', this.orderDetail);
     this.allowedHourValues = '7,8,9,10,11,12,13,14,15,16,17,18';
     this.allowedMinuteValues = '0,15,30,45';
     // Get today's date as minimum pickup date
     this.todayDate = new Date();
     this.pickupDate = this.todayDate.toISOString();
     this.changePickupDate(this.pickupDate);
-    console.log(this.orderDetail.DETAIL.PRICE)
-    // if(this.orderDetail.DETAIL.PRICE[0].PRICE !== 0 || this.orderDetail.DETAIL.PRICE[1].PRICE !== 0 || this.orderDetail.DETAIL.PRICE[2].PRICE !== 0) {
-    //   this.isOrderEmpty === false
-    // } else {
-    //   this.isOrderEmpty === true
-    // }
   }
 
   async presentAlertPrompt() {
