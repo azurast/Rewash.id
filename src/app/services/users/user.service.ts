@@ -64,7 +64,7 @@ export class UserService {
   }
 
   /* After Logging In, Save User Information */
-  setLoggedInUser(uid: string, email: string) {
+  setLoggedInUser(uid: string, email?: string) {
     this.loggedInUser = new User();
     this.dbRef = this.db.database.ref('users/' + uid).once('value').then((dataSnapshot) => {
       this.loggedInUser.id = uid;
@@ -74,6 +74,7 @@ export class UserService {
       this.loggedInUser.address = dataSnapshot.val().address || [];
       this.loggedInUser.imageUrl = dataSnapshot.val().imageUrl || [];
     });
+    console.log(this.loggedInUser)
   }
 
   /* Returns the currently signed in user */

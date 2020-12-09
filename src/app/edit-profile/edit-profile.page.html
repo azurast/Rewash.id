@@ -56,11 +56,11 @@
 <!--            <div class="ion-profile-information">-->
                 <ion-item>
                     <ion-label position="floating">Name</ion-label>
-                    <ion-input required type="text" [value]="user.name" name="name"></ion-input>
+                    <ion-input required type="text" [ngModel]="user.name" name="name"></ion-input>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">Phone Number</ion-label>
-                    <ion-input required type="number" [value]="user.phoneNumber" name="phone"></ion-input>
+                    <ion-input required type="number" [ngModel]="user.phoneNumber" name="phone"></ion-input>
                 </ion-item>
 <!--            </div>-->
             <ion-button expand="block" type="submit">SAVE</ion-button>

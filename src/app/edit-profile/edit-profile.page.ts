@@ -3,6 +3,7 @@ import {UserService} from '../services/users/user.service';
 import {User} from '../services/users/user';
 import {NgForm} from "@angular/forms";
 import {AngularFireDatabase} from "@angular/fire/database";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-edit-profile',
@@ -20,7 +21,8 @@ export class EditProfilePage implements OnInit {
 
   constructor(
     private db: AngularFireDatabase,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {
   }
 
@@ -104,10 +106,16 @@ export class EditProfilePage implements OnInit {
 
     // console.log(name)
 
-    this.db.list('user').update(userID, {
+    this.db.list('users').update(userID, {
       fullName: name,
       phoneNumber: phone,
       imageUrl: this.profilePic
-    });
+    }).then(() => {
+      this.userService.setLoggedInUser(userID);
+      setTimeout(() => {
+        this.router.navigateByUrl('/tabs/tab3');
+        }, 3000
+      )
+    })
   }
 }
