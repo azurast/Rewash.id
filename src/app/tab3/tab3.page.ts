@@ -34,7 +34,6 @@ export class Tab3Page implements OnInit {
   }
 
   ionViewWillEnter() {
-    console.log("masuk3")
     this.user = this.userService.getLoggedInUser();
   }
 

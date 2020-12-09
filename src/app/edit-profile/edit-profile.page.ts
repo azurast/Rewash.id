@@ -4,6 +4,7 @@ import {User} from '../services/users/user';
 import {NgForm} from "@angular/forms";
 import {AngularFireDatabase} from "@angular/fire/database";
 import {Router} from "@angular/router";
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'app-edit-profile',
@@ -22,7 +23,8 @@ export class EditProfilePage implements OnInit {
   constructor(
     private db: AngularFireDatabase,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController,
   ) {
   }
 
@@ -112,10 +114,16 @@ export class EditProfilePage implements OnInit {
       imageUrl: this.profilePic
     }).then(() => {
       this.userService.setLoggedInUser(userID);
-      setTimeout(() => {
-        this.router.navigateByUrl('/tabs/tab3');
-        }, 3000
-      )
+      this.presentToast()
     })
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Profile Updated',
+      duration: 3000,
+      color: 'success'
+    });
+    toast.present();
   }
 }
