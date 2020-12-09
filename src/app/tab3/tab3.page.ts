@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class Tab3Page implements OnInit {
   user: User;
+  photo: string;
   constructor(
     public auth: AngularFireAuth,
     private router: Router,
@@ -18,6 +19,12 @@ export class Tab3Page implements OnInit {
   ) {}
   ngOnInit(): void {
     this.user = this.userService.getLoggedInUser();
+
+    if(!this.user.imageUrl) {
+      this.photo = "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/8.png"
+    } else {
+      this.photo = this.user.imageUrl
+    }
   }
 
   signOut() {

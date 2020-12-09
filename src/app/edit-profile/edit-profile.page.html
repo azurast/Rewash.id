@@ -10,60 +10,60 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <form #form="ngForm" (ngSubmit)="saveProfile(form)">
-        <ion-grid class="ion-profile-grid">
-            <ion-row class="ion-profile-header" *ngIf="!isEditingPic">
+    <ion-grid class="ion-profile-grid">
+        <ion-row class="ion-profile-header" *ngIf="!isEditingPic">
+            <ion-avatar class="ion-profile-avatar">
+                <img [src]="profilePic" alt="Profile Picture">
+                <div (click)="handleStartEditing()">
+                    <span class="edit-icon"><ion-icon name="create-outline" class="icon"></ion-icon></span>
+                </div>
+            </ion-avatar>
+        </ion-row>
+        <ion-row class="ion-profile-header" *ngIf="isEditingPic">
+            <ion-col size="6">
                 <ion-avatar class="ion-profile-avatar">
-                    <img [src]="profilePic">
+                    <img [src]="profilePic" alt="Profile Picture">
                     <div (click)="handleStartEditing()">
                         <span class="edit-icon"><ion-icon name="create-outline" class="icon"></ion-icon></span>
                     </div>
                 </ion-avatar>
-            </ion-row>
-            <ion-row class="ion-profile-header" *ngIf="isEditingPic">
-                <ion-col size="6">
-                    <ion-avatar class="ion-profile-avatar">
-                        <img [src]="profilePic">
-                        <div (click)="handleStartEditing()">
-                            <span class="edit-icon"><ion-icon name="create-outline" class="icon"></ion-icon></span>
+            </ion-col>
+            <ion-col size="6">
+                <ion-card class="generate-card">
+                    <ion-card-header>
+                        <div (click)="handleCancelEditing()" style="margin: 0; width: fit-content">
+                            <span class="icon-cancel"><ion-icon name="close" class="icon"></ion-icon></span>
                         </div>
-                    </ion-avatar>
-                </ion-col>
-                <ion-col size="6">
-                    <ion-card class="generate-card">
-                        <ion-card-header>
-                            <div (click)="handleCancelEditing()" style="margin: 0; width: fit-content">
-                                <span class="icon-cancel"><ion-icon name="close" class="icon"></ion-icon></span>
-                            </div>
-                            <span *ngIf="pagePosition!==1" (click)="handleChangePage(-1)"><ion-icon
-                                    name="chevron-back-circle-outline"></ion-icon></span>
-                            <span *ngIf="pagePosition===1"><ion-icon name="chevron-back-circle-outline"
-                                                                     style="color: white"></ion-icon></span>
-                            <span>  Pick Avatar  </span>
-                            <span *ngIf="pagePosition!==7" (click)="handleChangePage(1)"><ion-icon
-                                    name="chevron-forward-circle-outline"></ion-icon></span>
-                        </ion-card-header>
-                        <ion-card-content>
-                            <ion-list>
-                                <ion-col size="1" *ngFor="let singleAva of showAvatar">
-                                    <img class="img-preview" [src]="singleAva" (click)="handleChooseAvatar(singleAva)">
-                                </ion-col>
-                            </ion-list>
-                        </ion-card-content>
-                    </ion-card>
-                </ion-col>
-            </ion-row>
-            <div class="ion-profile-information">
+                        <span *ngIf="pagePosition!==1" (click)="handleChangePage(-1)"><ion-icon
+                                name="chevron-back-circle-outline"></ion-icon></span>
+                        <span *ngIf="pagePosition===1"><ion-icon name="chevron-back-circle-outline"
+                                                                 style="color: white"></ion-icon></span>
+                        <span>  Pick Avatar  </span>
+                        <span *ngIf="pagePosition!==7" (click)="handleChangePage(1)"><ion-icon
+                                name="chevron-forward-circle-outline"></ion-icon></span>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-list>
+                            <ion-col size="1" *ngFor="let singleAva of showAvatar">
+                                <img class="img-preview" [src]="singleAva" (click)="handleChooseAvatar(singleAva)" alt="Option Picture">
+                            </ion-col>
+                        </ion-list>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <form #form="ngForm" (ngSubmit)="saveProfile(form)">
+<!--            <div class="ion-profile-information">-->
                 <ion-item>
                     <ion-label position="floating">Name</ion-label>
                     <ion-input required type="text" [value]="user.name" name="name"></ion-input>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">Phone Number</ion-label>
-                    <ion-input required type="text" [value]="user.phoneNumber" name="phone"></ion-input>
+                    <ion-input required type="number" [value]="user.phoneNumber" name="phone"></ion-input>
                 </ion-item>
-            </div>
-        </ion-grid>
-        <ion-button expand="block" type="submit">SAVE</ion-button>
-    </form>
+<!--            </div>-->
+            <ion-button expand="block" type="submit">SAVE</ion-button>
+        </form>
+    </ion-grid>
 </ion-content>

@@ -37,7 +37,6 @@ export class Tab1Page implements OnInit {
       this.ongoingOrders = data.filter( val => {
         return val.finished !== true;
       })
-      console.log(this.ongoingOrders)
     })
   }
 

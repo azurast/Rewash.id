@@ -32,6 +32,7 @@ export class PriceSummaryCardComponent implements OnInit {
   outletId: string;
   outletName: string;
   userLocation: string;
+  // isOrderEmpty: boolean = true;
 
   constructor(
     public orderService: OrderService,
@@ -81,6 +82,12 @@ export class PriceSummaryCardComponent implements OnInit {
     this.todayDate = new Date();
     this.pickupDate = this.todayDate.toISOString();
     this.changePickupDate(this.pickupDate);
+    console.log(this.orderDetail.DETAIL.PRICE)
+    // if(this.orderDetail.DETAIL.PRICE[0].PRICE !== 0 || this.orderDetail.DETAIL.PRICE[1].PRICE !== 0 || this.orderDetail.DETAIL.PRICE[2].PRICE !== 0) {
+    //   this.isOrderEmpty === false
+    // } else {
+    //   this.isOrderEmpty === true
+    // }
   }
 
   async presentAlertPrompt() {
@@ -121,6 +128,9 @@ export class PriceSummaryCardComponent implements OnInit {
     this.presentAlertPrompt();
   }
 
+  ionViewWillEnter() {
+  }
+
   updateOrderDetail() {
     this.orderDetail.DETAIL.SHIPPING.PICKUPTD = this.pickupDate;
     this.orderDetail.DETAIL.SHIPPING.DELIVERYTD = this.deliveryDate;
@@ -149,7 +159,7 @@ export class PriceSummaryCardComponent implements OnInit {
       case '/delivery-details': {
         this.updateOrderDetail();
         this.addToDb();
-        this.router.navigate(['/tab/tabs1'])
+        this.router.navigate(['/tabs/tab1'])
         break;
       }
     }

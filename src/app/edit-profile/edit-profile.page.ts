@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/users/user.service';
-import { User} from '../services/users/user';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../services/users/user.service';
+import {User} from '../services/users/user';
 import {NgForm} from "@angular/forms";
 import {AngularFireDatabase} from "@angular/fire/database";
 
@@ -15,18 +13,24 @@ export class EditProfilePage implements OnInit {
   require: any
   user: User;
   profilePic: string;
-  isEditingPic: boolean = true;
+  isEditingPic: boolean = false;
   avatar: string[] = [];
   showAvatar: string[] = [];
   pagePosition: number = 1;
+
   constructor(
     private db: AngularFireDatabase,
     private userService: UserService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.user = this.userService.getLoggedInUser();
-    this.profilePic = this.user.imageUrl;
+    if (this.user.imageUrl) {
+      this.profilePic = this.user.imageUrl;
+    } else {
+      this.profilePic = "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/8.png"
+    }
     this.avatar = this.userService.fetchAvatar();
     this.fetchShowAvatar(1, 2, 3, 4)
   }
@@ -67,40 +71,40 @@ export class EditProfilePage implements OnInit {
 
     switch (this.pagePosition) {
       case 1:
-        this.fetchShowAvatar(1,2,3,4)
+        this.fetchShowAvatar(1, 2, 3, 4)
         break
       case 2:
-        this.fetchShowAvatar(5,6,7,8)
+        this.fetchShowAvatar(5, 6, 7, 8)
         break
       case 3:
-        this.fetchShowAvatar(8,10,11,12)
+        this.fetchShowAvatar(8, 10, 11, 12)
         break
       case 4:
-        this.fetchShowAvatar(13,14,15,16)
+        this.fetchShowAvatar(13, 14, 15, 16)
         break
       case 5:
-        this.fetchShowAvatar(17,18,19,20)
+        this.fetchShowAvatar(17, 18, 19, 20)
         break
       case 6:
-        this.fetchShowAvatar(21,22,23,24)
+        this.fetchShowAvatar(21, 22, 23, 24)
         break
       case 7:
-        this.fetchShowAvatar(25,26,27,28)
+        this.fetchShowAvatar(25, 26, 27, 28)
         break
       default:
-        this.fetchShowAvatar(1,2,3,4)
+        this.fetchShowAvatar(1, 2, 3, 4)
     }
   }
 
   saveProfile(form: NgForm) {
-    console.log(form)
+    console.log(form.value)
     let name = form.value.name
     let phone = form.value.phone
     let userID = this.user.id
 
     // console.log(name)
 
-    this.db.list('user').update(userID,{
+    this.db.list('user').update(userID, {
       fullName: name,
       phoneNumber: phone,
       imageUrl: this.profilePic
