@@ -138,23 +138,28 @@ export class PriceSummaryCardComponent implements OnInit {
   onNextClick() {
     switch (this.router.url) {
       case '/input-items': {
-        // alert('=== mau ke laundry details');
         this.router.navigate(['/laundry-details']);
         break;
       }
       case '/laundry-details': {
-        // alert('=== mau ke delivery details');
         this.router.navigate(['/delivery-details']);
         break;
       }
       case '/delivery-details': {
         this.updateOrderDetail();
         this.addToDb();
-        this.router.navigate(['/tabs/tab1'])
+        this.router.navigate(['/tabs/tab1']);
         break;
       }
     }
   }
 
 
+  cartEmpty() {
+    if (this.orderDetail.DETAIL.PRICE.every((item) => item.PRICE <= 0)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

@@ -219,7 +219,7 @@ export class InputDropdownComponent implements OnInit {
   addOtherItem(newItem) {
     const {other_item_name, other_item_qty} = newItem;
     this.count++;
-    if (other_item_name !== null || other_item_qty !== null) {
+    if (other_item_name !== null && other_item_qty !== null) {
       this.otherItems.push({
         KEY: Math.abs(this.hashCode(newItem.other_item_name + this.count)).toString(),
         NAME: other_item_name,
