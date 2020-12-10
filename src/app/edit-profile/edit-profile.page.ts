@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {UserService} from '../services/users/user.service';
-import {User} from '../services/users/user';
-import {NgForm} from "@angular/forms";
-import {AngularFireDatabase} from "@angular/fire/database";
-import {Router} from "@angular/router";
-import {ToastController} from "@ionic/angular";
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/users/user.service';
+import { User } from '../services/users/user';
+import { NgForm } from '@angular/forms';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-edit-profile',
@@ -12,13 +12,13 @@ import {ToastController} from "@ionic/angular";
   styleUrls: ['./edit-profile.page.scss'],
 })
 export class EditProfilePage implements OnInit {
-  require: any
+  require: any;
   user: User;
   profilePic: string;
-  isEditingPic: boolean = false;
+  isEditingPic = false;
   avatar: string[] = [];
   showAvatar: string[] = [];
-  pagePosition: number = 1;
+  pagePosition = 1;
 
   constructor(
     private db: AngularFireDatabase,
@@ -33,10 +33,10 @@ export class EditProfilePage implements OnInit {
     if (this.user.imageUrl) {
       this.profilePic = this.user.imageUrl;
     } else {
-      this.profilePic = "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/8.png"
+      this.profilePic = 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/8.png';
     }
     this.avatar = this.userService.fetchAvatar();
-    this.fetchShowAvatar(1, 2, 3, 4)
+    this.fetchShowAvatar(1, 2, 3, 4);
   }
 
   ionViewWillEnter() {
@@ -44,17 +44,17 @@ export class EditProfilePage implements OnInit {
     this.user = this.userService.getLoggedInUser();
     this.profilePic = this.user.imageUrl;
     this.avatar = this.userService.fetchAvatar();
-    this.fetchShowAvatar(1, 2, 3, 4)
+    this.fetchShowAvatar(1, 2, 3, 4);
   }
 
   fetchShowAvatar(a, b, c, d) {
-    this.showAvatar = []
+    this.showAvatar = [];
     this.showAvatar.push(
       this.avatar[a],
       this.avatar[b],
       this.avatar[c],
       this.avatar[d]
-    )
+    );
   }
 
   handleStartEditing() {
@@ -70,43 +70,42 @@ export class EditProfilePage implements OnInit {
     this.isEditingPic = false;
   }
 
+  // tslint:disable-next-line:variable-name
   handleChangePage(number: number) {
-    this.pagePosition = this.pagePosition + number
+    this.pagePosition = this.pagePosition + number;
 
     switch (this.pagePosition) {
       case 1:
-        this.fetchShowAvatar(1, 2, 3, 4)
-        break
+        this.fetchShowAvatar(1, 2, 3, 4);
+        break;
       case 2:
-        this.fetchShowAvatar(5, 6, 7, 8)
-        break
+        this.fetchShowAvatar(5, 6, 7, 8);
+        break;
       case 3:
-        this.fetchShowAvatar(8, 10, 11, 12)
-        break
+        this.fetchShowAvatar(8, 10, 11, 12);
+        break;
       case 4:
-        this.fetchShowAvatar(13, 14, 15, 16)
-        break
+        this.fetchShowAvatar(13, 14, 15, 16);
+        break;
       case 5:
-        this.fetchShowAvatar(17, 18, 19, 20)
-        break
+        this.fetchShowAvatar(17, 18, 19, 20);
+        break;
       case 6:
-        this.fetchShowAvatar(21, 22, 23, 24)
-        break
+        this.fetchShowAvatar(21, 22, 23, 24);
+        break;
       case 7:
-        this.fetchShowAvatar(25, 26, 27, 28)
-        break
+        this.fetchShowAvatar(25, 26, 27, 28);
+        break;
       default:
-        this.fetchShowAvatar(1, 2, 3, 4)
+        this.fetchShowAvatar(1, 2, 3, 4);
     }
   }
 
   saveProfile(form: NgForm) {
-    console.log(form.value)
-    let name = form.value.name
-    let phone = form.value.phone
-    let userID = this.user.id
-
-    // console.log(name)
+    console.log(form.value);
+    const name = form.value.name;
+    const phone = form.value.phone;
+    const userID = this.user.id;
 
     this.db.list('users').update(userID, {
       fullName: name,
@@ -114,8 +113,10 @@ export class EditProfilePage implements OnInit {
       imageUrl: this.profilePic
     }).then(() => {
       this.userService.setLoggedInUser(userID);
-      this.presentToast()
-    })
+      this.presentToast().then(() => {
+       this.router.navigateByUrl('/tabs/tab3');
+      });
+    });
   }
 
   async presentToast() {
@@ -124,6 +125,6 @@ export class EditProfilePage implements OnInit {
       duration: 3000,
       color: 'success'
     });
-    toast.present();
+    await toast.present();
   }
 }

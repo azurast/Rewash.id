@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {OrderDetail} from '../../constants/order-model';
-import {registerLocaleData} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { OrderDetail } from '../../constants/order-model';
+import { registerLocaleData } from '@angular/common';
 import localeId from '@angular/common/locales/id';
-import {OTHER_PRICE} from '../../constants/other-price';
-import {ActivatedRoute} from '@angular/router';
-import {AlertController, NavController} from '@ionic/angular';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {User} from '../services/users/user';
-import {UserService} from '../services/users/user.service';
+import { OTHER_PRICE } from '../../constants/other-price';
+import { ActivatedRoute } from '@angular/router';
+import { AlertController, NavController } from '@ionic/angular';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { User } from '../services/users/user';
+import { UserService } from '../services/users/user.service';
 
 registerLocaleData(localeId, 'id');
 
@@ -84,7 +84,7 @@ export class OrderDetailPage implements OnInit {
         }, {
           text: 'Ok',
           handler: (data) => {
-            if (data.rating !== "") {
+            if (data.rating !== '') {
               const {rating, feedback} = data;
               /* Buat nampung previous values nya
               * OUTLET :
@@ -128,15 +128,15 @@ export class OrderDetailPage implements OnInit {
                 //     });
                 // });
                 // Update data mengenai outlet setelah mendapatkan feedback & rating
-                for(let i = 0; i<=7; i++) {
+                for (let i = 0; i <= 7; i++) {
                   this.db.database.ref('orders/' + this.user.id.concat(`/${this.orderDetail.id}/DETAIL/PROGRESS/${i}`))
                     .update({
                       STATUS: true
-                    })
+                    });
                 }
                 this.db.database.ref('orders/' + this.user.id.concat(`/${this.orderDetail.id}`)).update({
                   finished: true
-                })
+                });
                 outletRef.once('value').then((dataSnaphot) => {
                   prevRating = dataSnaphot.val().points;
                   transactionCount = dataSnaphot.val().transactions;

@@ -32,6 +32,7 @@ export class PriceSummaryCardComponent implements OnInit {
   outletId: string;
   outletName: string;
   userLocation: string;
+  loading: boolean;
 
   constructor(
     public orderService: OrderService,
@@ -51,8 +52,8 @@ export class PriceSummaryCardComponent implements OnInit {
   changePickupDate(newPickupDate: string) {
     this.pickupDate = newPickupDate;
     // Calculate min & max delivery date
-    this.minDeliveryDate = this.addDays(new Date(this.pickupDate), 1).toISOString().slice(0, 10);
-    this.maxDeliveryDate = this.addDays(new Date(this.pickupDate), 7).toISOString().slice(0, 10);
+    this.minDeliveryDate = this.addDays(new Date(this.pickupDate), 1).toISOString();
+    this.maxDeliveryDate = this.addDays(new Date(this.pickupDate), 7).toISOString();
     this.deliveryDate = this.minDeliveryDate;
   }
 
@@ -136,25 +137,31 @@ export class PriceSummaryCardComponent implements OnInit {
   }
 
   onNextClick() {
+    this.loading = true;
     switch (this.router.url) {
       case '/input-items': {
-        // alert('=== mau ke laundry details');
         this.router.navigate(['/laundry-details']);
         break;
       }
       case '/laundry-details': {
-        // alert('=== mau ke delivery details');
         this.router.navigate(['/delivery-details']);
         break;
       }
       case '/delivery-details': {
         this.updateOrderDetail();
         this.addToDb();
-        this.router.navigate(['/tabs/tab1'])
+        this.router.navigate(['/loading']);
         break;
       }
     }
   }
 
 
+  cartEmpty() {
+    if (this.orderDetail.DETAIL.PRICE.every((item) => item.PRICE <= 0)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
