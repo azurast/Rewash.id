@@ -19,18 +19,17 @@ export class Tab3Page implements OnInit {
   ) {}
   ngOnInit(): void {
     this.user = this.userService.getLoggedInUser();
-
-    if(!this.user.imageUrl) {
-      this.photo = "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/8.png"
+    if (!this.user.imageUrl) {
+      this.photo = 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/8.png'
     } else {
-      this.photo = this.user.imageUrl
+      this.photo = this.user.imageUrl;
     }
   }
 
   signOut() {
     return this.auth.signOut().then(() => {
       this.router.navigateByUrl('/authentication');
-    })
+    });
   }
 
   ionViewWillEnter() {

@@ -51,8 +51,8 @@ export class PriceSummaryCardComponent implements OnInit {
   changePickupDate(newPickupDate: string) {
     this.pickupDate = newPickupDate;
     // Calculate min & max delivery date
-    this.minDeliveryDate = this.addDays(new Date(this.pickupDate), 1).toISOString().slice(0, 10);
-    this.maxDeliveryDate = this.addDays(new Date(this.pickupDate), 7).toISOString().slice(0, 10);
+    this.minDeliveryDate = this.addDays(new Date(this.pickupDate), 1).toISOString();
+    this.maxDeliveryDate = this.addDays(new Date(this.pickupDate), 7).toISOString();
     this.deliveryDate = this.minDeliveryDate;
   }
 
