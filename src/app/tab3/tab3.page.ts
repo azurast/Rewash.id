@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/users/user.service';
 import { User} from '../services/users/user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { BooleanValueAccessor } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab3',
@@ -11,6 +12,8 @@ import { Router } from '@angular/router';
 })
 export class Tab3Page implements OnInit {
   user: User;
+  loading: boolean;
+
   photo: string;
   constructor(
     public auth: AngularFireAuth,
@@ -27,6 +30,7 @@ export class Tab3Page implements OnInit {
   }
 
   signOut() {
+    this.loading = true;
     return this.auth.signOut().then(() => {
       this.router.navigateByUrl('/authentication');
     });
