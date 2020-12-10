@@ -142,11 +142,11 @@ export class OrderService {
     this.dbRef.child(`${userId}`).push({...orderDetail})
   }
 
-  storeOrderDetail (value: string | number) {
-    this.orderMade.push(value)
+  storeOrderDetail(value: string | number) {
+    this.orderMade.push(value);
   }
 
-  clearOrderDetail () {
+  clearOrderDetail() {
     this.orderMade = [];
   }
 

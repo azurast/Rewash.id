@@ -19,11 +19,11 @@
     <ion-item-group>
       <ion-item-divider color="light">
         <ion-label style="font-weight: bold;">General</ion-label>
+        <ion-note slot="end" class="ion-margin-end">{{orderDetail.DETAIL.PRICE[1].PRICE| currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
       </ion-item-divider>
       <ion-list *ngFor="let item of orderDetail.NORMAL" lines="full">
         <ion-item>
           <ion-label slot="start">{{item.QTY}} x {{item.NAME}}</ion-label>
-          <ion-note slot="end">{{item.PRICE | currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
         </ion-item>
       </ion-list>
     </ion-item-group>
@@ -31,6 +31,7 @@
     <ion-item-group>
       <ion-item-divider color="light">
         <ion-label style="font-weight: bold;">Special</ion-label>
+        <ion-note slot="end" class="ion-margin-end">{{orderDetail.DETAIL.PRICE[0].PRICE| currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
       </ion-item-divider>
       <ion-list *ngFor="let item of orderDetail.SPECIAL" lines="full">
         <ion-item>
@@ -43,14 +44,19 @@
     <ion-item-group>
       <ion-item-divider color="light">
         <ion-label style="font-weight: bold;">Others</ion-label>
+        <ion-note slot="end" class="ion-margin-end">{{orderDetail.DETAIL.PRICE[2].PRICE| currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
       </ion-item-divider>
       <ion-list *ngFor="let item of orderDetail.OTHERS" lines="full">
         <ion-item>
           <ion-label slot="start">{{item.QTY}} x {{item.NAME}}</ion-label>
-          <ion-note slot="end">{{(OTHERS_PRICE * item.QTY) | currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
+          <ion-note slot="end">{{(OTHERS_PRICE) | currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
         </ion-item>
       </ion-list>
     </ion-item-group>
+    <ion-item-divider color="light">
+      <ion-label style="font-weight: bold;">Delivery Fee</ion-label>
+      <ion-note slot="end" class="ion-margin-end">{{orderDetail.DETAIL.PRICE[3].PRICE| currency:"IDR":"symbol": "3.0": "id"}}</ion-note>
+    </ion-item-divider>
     <ion-item color="success">
       <ion-label slot="start" style="font-weight: bold;">Total</ion-label>
       <ion-note slot="end" style="color: #FFFFFF; font-size: 14px; font-weight: bold;">

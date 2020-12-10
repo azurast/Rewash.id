@@ -136,7 +136,7 @@ export class InputDropdownComponent implements OnInit {
     });
 
     normalItemsPriceTotal = 10000 * (normalItemsEstWeightTotal / 1000);
-    totalOrderPrice = specialItemsPriceTotal + normalItemsPriceTotal + otherItemsPriceTotal;
+    totalOrderPrice = specialItemsPriceTotal + normalItemsPriceTotal + otherItemsPriceTotal + (Math.ceil(this.distance) * 5000);
 
     this.orderDetail.NORMAL = normalItemsRes;
     this.orderDetail.SPECIAL = specialItemsRes;
