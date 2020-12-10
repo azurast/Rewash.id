@@ -37,6 +37,7 @@ export class ChatPage implements OnInit {
 
       this.auth.onAuthStateChanged((user) => {
         uid = user.uid;
+        console.log(uid)
         this.uid = user.uid
       }).then(() => {
         this.db.list('/chat/').query.orderByKey().equalTo(this.orderId).once('value').then(

@@ -54,7 +54,7 @@ export class Tab1Page implements OnInit {
       else {
         this.uid = user.uid;
         this.fetchOngoingOrder();
-        this.userService.storeLoggedUser(user.uid);
+        this.userService.setLoggedInUser(user.uid);
       }
     });
   }
@@ -70,6 +70,8 @@ export class Tab1Page implements OnInit {
   }
 
   ionViewWillEnter() {
+    console.log(this.userService.getLoggedInUser())
     this.user = this.userService.getLoggedInUser();
+    this.fetchOngoingOrder()
   }
 }

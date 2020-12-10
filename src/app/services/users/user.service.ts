@@ -12,9 +12,11 @@ export class UserService {
   dbRef: any;
   loggedInUser: User;
   private currentUser: string;
+  localStorage: Storage;
 
   constructor(private db: AngularFireDatabase) {
     this.usersRef = db.list(this.dbPath);
+    this.localStorage = window.localStorage
   }
 
   avatar = [
@@ -63,6 +65,10 @@ export class UserService {
     });
   }
 
+  get isLocalStorageSupported(): boolean {
+    return !!this.localStorage
+  }
+
   /* After Logging In, Save User Information */
   setLoggedInUser(uid: string, email?: string) {
     this.loggedInUser = new User();
@@ -73,13 +79,21 @@ export class UserService {
       this.loggedInUser.phoneNumber = dataSnapshot.val().phoneNumber;
       this.loggedInUser.address = dataSnapshot.val().address || [];
       this.loggedInUser.imageUrl = dataSnapshot.val().imageUrl || [];
+
+      if(this.isLocalStorageSupported) {
+        this.localStorage.setItem("user", JSON.stringify(this.loggedInUser))
+      }
     });
     console.log(this.loggedInUser)
   }
 
   /* Returns the currently signed in user */
   getLoggedInUser() {
-    return this.loggedInUser;
+    //return this.loggedInUser;
+    if(this.isLocalStorageSupported) {
+      return JSON.parse(this.localStorage.getItem("user"))
+    }
+    return null
   }
 
   storeLoggedUser(uid: string) {
@@ -92,5 +106,9 @@ export class UserService {
 
   fetchAvatar() {
     return this.avatar;
+  }
+
+  remove() {
+    this.localStorage.removeItem("user")
   }
 }

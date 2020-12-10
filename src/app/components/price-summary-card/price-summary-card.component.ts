@@ -132,7 +132,7 @@ export class PriceSummaryCardComponent implements OnInit {
   }
 
   addToDb() {
-    this.orderService.addToDb(this.orderDetail, this.userService.getLoggedUser());
+    this.orderService.addToDb(this.orderDetail, this.userService.getLoggedInUser().id);
   }
 
   onNextClick() {
