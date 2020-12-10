@@ -36,15 +36,8 @@
             <ion-input type="password" formControlName="login_password"></ion-input>
           </ion-item>
         </ion-row>
-        <ion-row>
-          <ion-col size="6" offset="6" class="authentication-forgot-password">
-            <ion-label>
-              <ion-text color="danger">Forgot Password?</ion-text>
-            </ion-label>
-          </ion-col>
-        </ion-row>
         <div class="buttons">
-          <ion-button expand="full" fill="solid" type="submit">SIGN IN</ion-button>
+          <ion-button expand="full" fill="solid" type="submit"><ion-label > <ion-spinner *ngIf="loadingIn"></ion-spinner> SIGN IN</ion-label></ion-button>
           <ion-row class="orlines">
             <ion-col size="5" class="orline">
               <!--        <ion-item-divider></ion-item-divider>-->
@@ -103,11 +96,13 @@
         <ion-row>
           <ion-item lines="none">
             <ion-label position="floating">Phone Number</ion-label>
-            <ion-input type="text" formControlName="signup_phone_number"></ion-input>
+            <ion-input type="number" formControlName="signup_phone_number"></ion-input>
           </ion-item>
         </ion-row>
         <div class="buttons">
-        <ion-button expand="full" fill="solid" type="submit">SIGN UP</ion-button>
+        <ion-button expand="full" fill="solid" type="submit">
+          <ion-label > <ion-spinner *ngIf="loadingUp"></ion-spinner> SIGN UP</ion-label>
+        </ion-button>
         <ion-row class="orlines">
           <ion-col size="5" class="orline">
             <!--        <ion-item-divider></ion-item-divider>-->

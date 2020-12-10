@@ -32,6 +32,7 @@ export class PriceSummaryCardComponent implements OnInit {
   outletId: string;
   outletName: string;
   userLocation: string;
+  loading: boolean;
 
   constructor(
     public orderService: OrderService,
@@ -51,8 +52,8 @@ export class PriceSummaryCardComponent implements OnInit {
   changePickupDate(newPickupDate: string) {
     this.pickupDate = newPickupDate;
     // Calculate min & max delivery date
-    this.minDeliveryDate = this.addDays(new Date(this.pickupDate), 1).toISOString().slice(0, 10);
-    this.maxDeliveryDate = this.addDays(new Date(this.pickupDate), 7).toISOString().slice(0, 10);
+    this.minDeliveryDate = this.addDays(new Date(this.pickupDate), 1).toISOString();
+    this.maxDeliveryDate = this.addDays(new Date(this.pickupDate), 7).toISOString();
     this.deliveryDate = this.minDeliveryDate;
   }
 
@@ -63,7 +64,6 @@ export class PriceSummaryCardComponent implements OnInit {
   ngOnInit() {
     this.userLocation = this.orderService.getOrderDetail()[3];
     this.outletId = this.orderService.getOrderDetail()[0];
-    console.log("dlv", this.userLocation)
     this.outletName = this.outletService.getOutlet(this.outletId).name
     if (this.router.url === '/delivery-details') {
       this.deliveryDetailPage = true;
@@ -74,7 +74,6 @@ export class PriceSummaryCardComponent implements OnInit {
       .subscribe((orderData) => {
         this.orderDetail = orderData;
       });
-    // console.log('===orderDetail', this.orderDetail);
     this.allowedHourValues = '7,8,9,10,11,12,13,14,15,16,17,18';
     this.allowedMinuteValues = '0,15,30,45';
     // Get today's date as minimum pickup date
@@ -121,6 +120,9 @@ export class PriceSummaryCardComponent implements OnInit {
     this.presentAlertPrompt();
   }
 
+  ionViewWillEnter() {
+  }
+
   updateOrderDetail() {
     this.orderDetail.DETAIL.SHIPPING.PICKUPTD = this.pickupDate;
     this.orderDetail.DETAIL.SHIPPING.DELIVERYTD = this.deliveryDate;
@@ -135,25 +137,31 @@ export class PriceSummaryCardComponent implements OnInit {
   }
 
   onNextClick() {
+    this.loading = true;
     switch (this.router.url) {
       case '/input-items': {
-        // alert('=== mau ke laundry details');
         this.router.navigate(['/laundry-details']);
         break;
       }
       case '/laundry-details': {
-        // alert('=== mau ke delivery details');
         this.router.navigate(['/delivery-details']);
         break;
       }
       case '/delivery-details': {
         this.updateOrderDetail();
         this.addToDb();
-        this.router.navigate(['/tab/tabs1'])
+        this.router.navigate(['/loading']);
         break;
       }
     }
   }
 
 
+  cartEmpty() {
+    if (this.orderDetail.DETAIL.PRICE.every((item) => item.PRICE <= 0)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

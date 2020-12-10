@@ -10,7 +10,7 @@
   <ion-grid class="ion-profile-grid">
     <ion-row class="ion-profile-header">
       <ion-avatar class="ion-profile-avatar">
-        <img [src]=user.imageUrl>
+        <img [src]=this.photo alt="Profile Picture">
       </ion-avatar>
     </ion-row>
     <div class="ion-profile-information">
@@ -24,9 +24,6 @@
       </ion-row>
       <ion-row >
         <p>{{ user.email }}</p>
-      </ion-row>
-      <ion-row >
-        <p>{{ user.address[0]?.locationName || 'No Address Has Been Saved' }}</p>
       </ion-row>
       <ion-row>
         <ion-col size="2.5" class="ion-profile-button">

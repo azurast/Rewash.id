@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {OrderDetail} from '../../constants/order-model';
-import {registerLocaleData} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { OrderDetail } from '../../constants/order-model';
+import { registerLocaleData } from '@angular/common';
 import localeId from '@angular/common/locales/id';
-import {OTHER_PRICE} from '../../constants/other-price';
-import {ActivatedRoute} from '@angular/router';
-import {AlertController, NavController} from '@ionic/angular';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {User} from '../services/users/user';
-import {UserService} from '../services/users/user.service';
+import { OTHER_PRICE } from '../../constants/other-price';
+import { ActivatedRoute } from '@angular/router';
+import { AlertController, NavController } from '@ionic/angular';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { User } from '../services/users/user';
+import { UserService } from '../services/users/user.service';
 
 registerLocaleData(localeId, 'id');
 
@@ -84,7 +84,7 @@ export class OrderDetailPage implements OnInit {
         }, {
           text: 'Ok',
           handler: (data) => {
-            if (data.rating !== "") {
+            if (data.rating !== '') {
               const {rating, feedback} = data;
               /* Buat nampung previous values nya
               * OUTLET :
@@ -110,23 +110,33 @@ export class OrderDetailPage implements OnInit {
                 .equalTo(this.orderDetail.DETAIL.ORDERID);
               try {
                 // Set all PROGRESS STATUS to TRUE
-                orderRef.once('value').then((dataSnapshot) => {
-                  console.log(dataSnapshot.val())
-                  index = dataSnapshot.val().findIndex((obj) => obj?.DETAIL !== undefined);
-                  prevProgress = dataSnapshot.val().filter((obj) => !obj.isEmpty)[0].DETAIL.PROGRESS;
-                }).then(() => {
-                  prevProgress.forEach((item) => {
-                    newProgress.push({
-                      NAME: item.NAME,
+                // orderRef.once('value').then((dataSnapshot) => {
+                //   console.log(dataSnapshot.val())
+                //   index = dataSnapshot.val().findIndex((obj) => obj?.DETAIL !== undefined);
+                //   console.log("try", (dataSnapshot.val())[0].DETAIL.PROGRESS)
+                //   prevProgress = dataSnapshot.val()[0].DETAIL.PROGRESS;
+                // }).then(() => {
+                //   prevProgress.forEach((item) => {
+                //     newProgress.push({
+                //       NAME: item.NAME,
+                //       STATUS: true
+                //     });
+                //   });
+                //   this.db.database.ref('orders/' + this.user.id.concat(`/${index}/DETAIL`))
+                //     .update({
+                //       PROGRESS: newProgress
+                //     });
+                // });
+                // Update data mengenai outlet setelah mendapatkan feedback & rating
+                for (let i = 0; i <= 7; i++) {
+                  this.db.database.ref('orders/' + this.user.id.concat(`/${this.orderDetail.id}/DETAIL/PROGRESS/${i}`))
+                    .update({
                       STATUS: true
                     });
-                  });
-                  this.db.database.ref('orders/' + this.user.id.concat(`/${index}/DETAIL`))
-                    .update({
-                      PROGRESS: newProgress
-                    });
+                }
+                this.db.database.ref('orders/' + this.user.id.concat(`/${this.orderDetail.id}`)).update({
+                  finished: true
                 });
-                // Update data mengenai outlet setelah mendapatkan feedback & rating
                 outletRef.once('value').then((dataSnaphot) => {
                   prevRating = dataSnaphot.val().points;
                   transactionCount = dataSnaphot.val().transactions;
@@ -139,7 +149,7 @@ export class OrderDetailPage implements OnInit {
                   outletRef.child('feedbacks').push(feedback);
                 });
               } catch (e) {
-                console.log('===Error', e);
+                // console.log('===Error', e);
               } finally {
                 this.navCtrl.navigateBack('/tabs/tab1');
               }
@@ -153,7 +163,6 @@ export class OrderDetailPage implements OnInit {
   }
 
   onComplete() {
-    console.log(this.orderDetail)
     this.presentAlertPrompt();
   }
 }
