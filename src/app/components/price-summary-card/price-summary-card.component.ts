@@ -150,7 +150,8 @@ export class PriceSummaryCardComponent implements OnInit {
       case '/delivery-details': {
         this.updateOrderDetail();
         this.addToDb();
-        this.router.navigate(['/tabs/tab1']);
+        this.router.navigate(['/loading']);
+        // this.router.navigate(['/tabs/tab1']);
         break;
       }
     }
