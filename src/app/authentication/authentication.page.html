@@ -37,7 +37,7 @@
           </ion-item>
         </ion-row>
         <div class="buttons">
-          <ion-button expand="full" fill="solid" type="submit">SIGN IN</ion-button>
+          <ion-button expand="full" fill="solid" type="submit"><ion-label > <ion-spinner *ngIf="loadingIn"></ion-spinner> SIGN IN</ion-label></ion-button>
           <ion-row class="orlines">
             <ion-col size="5" class="orline">
               <!--        <ion-item-divider></ion-item-divider>-->
@@ -100,7 +100,9 @@
           </ion-item>
         </ion-row>
         <div class="buttons">
-        <ion-button expand="full" fill="solid" type="submit">SIGN UP</ion-button>
+        <ion-button expand="full" fill="solid" type="submit">
+          <ion-label > <ion-spinner *ngIf="loadingUp"></ion-spinner> SIGN UP</ion-label>
+        </ion-button>
         <ion-row class="orlines">
           <ion-col size="5" class="orline">
             <!--        <ion-item-divider></ion-item-divider>-->

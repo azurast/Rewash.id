@@ -32,6 +32,7 @@ export class PriceSummaryCardComponent implements OnInit {
   outletId: string;
   outletName: string;
   userLocation: string;
+  loading: boolean;
 
   constructor(
     public orderService: OrderService,
@@ -136,6 +137,7 @@ export class PriceSummaryCardComponent implements OnInit {
   }
 
   onNextClick() {
+    this.loading = true;
     switch (this.router.url) {
       case '/input-items': {
         this.router.navigate(['/laundry-details']);

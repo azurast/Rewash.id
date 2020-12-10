@@ -103,5 +103,7 @@
       </ion-row>
     </ion-list>
   </div>
-  <ion-button *ngIf="!cartEmpty()" expand="full" (click)="onNextClick()">NEXT</ion-button>
+  <ion-button *ngIf="!cartEmpty()"expand="full" (click)="onNextClick()">
+    <ion-label > <ion-spinner *ngIf="loading"></ion-spinner> NEXT</ion-label>
+  </ion-button>
 </div>
