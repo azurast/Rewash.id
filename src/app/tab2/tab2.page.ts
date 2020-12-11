@@ -40,10 +40,8 @@ export class Tab2Page implements OnInit {
         ...data.payload.val()
       })))
     ).subscribe( data => {
-      console.log(data)
       this.allOrders = data;
     })
-    console.log(this.allOrders)
   }
 
   ngOnInit() {

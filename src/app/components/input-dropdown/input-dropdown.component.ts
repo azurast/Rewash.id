@@ -136,7 +136,7 @@ export class InputDropdownComponent implements OnInit {
     });
 
     normalItemsPriceTotal = 10000 * (normalItemsEstWeightTotal / 1000);
-    totalOrderPrice = specialItemsPriceTotal + normalItemsPriceTotal + otherItemsPriceTotal;
+    totalOrderPrice = specialItemsPriceTotal + normalItemsPriceTotal + otherItemsPriceTotal + (Math.ceil(this.distance) * 5000);
 
     this.orderDetail.NORMAL = normalItemsRes;
     this.orderDetail.SPECIAL = specialItemsRes;
@@ -219,7 +219,7 @@ export class InputDropdownComponent implements OnInit {
   addOtherItem(newItem) {
     const {other_item_name, other_item_qty} = newItem;
     this.count++;
-    if (other_item_name !== null || other_item_qty !== null) {
+    if (other_item_name !== null && other_item_qty !== null) {
       this.otherItems.push({
         KEY: Math.abs(this.hashCode(newItem.other_item_name + this.count)).toString(),
         NAME: other_item_name,

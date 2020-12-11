@@ -91,6 +91,7 @@
   </div>
 <!--   LIST OF PRICES-->
   <div style="margin: 0 0 10px 0">
+    <ion-text style="color: #6ce4e9" *ngIf="cartEmpty()">Your item is empty</ion-text>
     <ion-list *ngFor="let item of orderDetail.DETAIL.PRICE" class="ion-no-padding">
       <ion-row *ngIf="item.PRICE > 0">
         <ion-col size="8" class="ion-price-label">
@@ -102,5 +103,7 @@
       </ion-row>
     </ion-list>
   </div>
-  <ion-button expand="full" (click)="onNextClick()">NEXT</ion-button>
+  <ion-button *ngIf="!cartEmpty()"expand="full" (click)="onNextClick()">
+    <ion-label > <ion-spinner *ngIf="loading"></ion-spinner> NEXT</ion-label>
+  </ion-button>
 </div>

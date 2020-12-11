@@ -15,6 +15,8 @@ export class AuthenticationPage implements OnInit {
   loginForm: FormGroup;
   signUpForm: FormGroup;
   currentUser: any;
+  loadingIn: boolean;
+  loadingUp: boolean;
 
   constructor(
       private router: Router,
@@ -27,13 +29,13 @@ export class AuthenticationPage implements OnInit {
 
   ngOnInit() {
     this.auth.onAuthStateChanged((user) => {
-      // console.log('===user', user);
-      this.router.navigateByUrl('/pages');
       if (user) {
         this.userService.storeLoggedUser(user.uid);
         this.router.navigateByUrl('tabs/tab1');
         this.currentUser = user;
         this.userService.setLoggedInUser(user?.uid, user?.email);
+      } else {
+        this.router.navigateByUrl('/pages');
       }
     });
     this.loginForm = new FormGroup({
@@ -71,6 +73,7 @@ export class AuthenticationPage implements OnInit {
   }
 
   loginUser(credentials) {
+    this.loadingIn = true;
     this.auth.signInWithEmailAndPassword(credentials.login_email, credentials.login_password)
       .then((user) => {
         this.router.navigateByUrl('tabs/tab1');
@@ -78,6 +81,7 @@ export class AuthenticationPage implements OnInit {
       },
         // tslint:disable-next-line:no-shadowed-variable
         async error => {
+          this.loadingIn = false;
           const alert = await this.alertCtrl.create({
             message: error.message,
             buttons: [{text: 'OK', role: 'cancel'}]
@@ -87,6 +91,7 @@ export class AuthenticationPage implements OnInit {
   }
 
   signUpUser(credentials) {
+    this.loadingUp = true;
     this.auth.createUserWithEmailAndPassword(credentials.signup_email, credentials.signup_password)
       .then((userCredential) => {
           this.userService.storeLoggedUser(userCredential.user.uid);
@@ -94,6 +99,7 @@ export class AuthenticationPage implements OnInit {
           this.router.navigateByUrl('tabs/tab1');
         },
         async error => {
+          this.loadingUp = false;
           const alert = await this.alertCtrl.create({
             message: error.message,
             buttons: [{text: 'OK', role: 'cancel'}]
